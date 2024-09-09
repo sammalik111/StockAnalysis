@@ -8,7 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
     toggleSidebarBtn.addEventListener('click', function () {
         // Toggle the sidebar visibility
         sidenav.classList.toggle('hidden');
-        container.classList.toggle('expanded');
+
+        // Adjust the container width based on sidebar visibility
+        if (sidenav.classList.contains('hidden')) {
+            container.classList.add('expanded'); // Full width when sidebar is hidden
+        } else {
+            container.classList.remove('expanded'); // Center it when sidebar is visible
+        }
     });
     
 

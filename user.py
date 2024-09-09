@@ -1,56 +1,41 @@
-from db import db  # Import db from db.py
+from db import db
 import json
+from werkzeug.security import generate_password_hash
 
 class AddUser(db.Model):
     __tablename__ = 'users'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
-    favorite_stocks = db.Column(db.Text, nullable=True)  # Store favorite stocks as JSON
-    preferences = db.Column(db.Text, nullable=True)  # Store preferences as JSON
+    favorite_stocks = db.Column(db.Text, nullable=True)  # Store as JSON string
+    preferences = db.Column(db.Text, nullable=True)      # Store as JSON string
 
-    def __init__(self, name, password):
+    def __init__(self, name, password, favorite_stocks=None, preferences=None):
         self.name = name
-        self.password = password
-        self.favorite_stocks = json.dumps({})  # Initialize as an empty JSON object
-        self.preferences = json.dumps({
+        self.password = generate_password_hash(password)
+        self.favorite_stocks = json.dumps(favorite_stocks or [])  # Convert to JSON string
+        self.preferences = json.dumps(preferences or {
             'theme': 'light',
             'currency': 'USD',
             'language': 'en',
             'sectors': [],
             'risk_tolerance': [],
-        })  # Initialize preferences as a JSON object
+        })
 
-    def add_stock(self, stock_name, stock):
+    def add_stock(self, stock_name):
+        # Load existing stocks, add new stock, and then update the JSON string
         stocks = json.loads(self.favorite_stocks)
-        stocks[stock_name] = stock
+        stocks.append(stock_name)
         self.favorite_stocks = json.dumps(stocks)
 
-    def remove_stock(self, stock_name):
-        stocks = json.loads(self.favorite_stocks)
-        stocks.pop(stock_name, None)
-        self.favorite_stocks = json.dumps(stocks)
+    def set_preferences(self, new_preferences):
+        # Set new preferences and convert them to a JSON string
+        self.preferences = json.dumps(new_preferences)
 
-    def add_preferred_sectors(self, sector_name):
-        prefs = json.loads(self.preferences)
-        prefs['sectors'].append(sector_name)
-        self.preferences = json.dumps(prefs)
+    def get_preferences(self):
+        # Convert the stored JSON string back to a Python dictionary
+        return json.loads(self.preferences)
 
-    def remove_preferred_sectors(self, sector_name):
-        prefs = json.loads(self.preferences)
-        prefs['sectors'].remove(sector_name)
-        self.preferences = json.dumps(prefs)
-
-    def add_risk_tolerance(self, risk_level):
-        prefs = json.loads(self.preferences)
-        prefs['risk_tolerance'].append(risk_level)
-        self.preferences = json.dumps(prefs)
-
-    def remove_risk_tolerance(self, risk_level):
-        prefs = json.loads(self.preferences)
-        prefs['risk_tolerance'].remove(risk_level)
-        self.preferences = json.dumps(prefs)
-
-    def __repr__(self):
-        return f"<User(name={self.name}, favorite_stocks={self.favorite_stocks}, preferences={self.preferences})>"
+    def get_favorite_stocks(self):
+        # Convert the stored JSON string back to a Python list
+        return json.loads(self.favorite_stocks)

@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, g
 from datetime import timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 import yfinance as yf
@@ -29,42 +29,65 @@ db.init_app(app)
 with app.app_context():
     from user import AddUser  # Import AddUser after initializing db
 
-# Define User model for SQLAlchemy
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False, unique=True)
-    password = db.Column(db.String(200), nullable=False)
 
-    def __init__(self, name, password):
-        self.name = name
-        self.password = generate_password_hash(password)
+# Load user before every request and make it globally available
+@app.before_request
+def load_user():
+    g.current_user = None
 
-# In-memory representation of user preferences and stocks
-users_data = {}
+    # Check if the user is in the session
+    if 'user' in session:
+        user_name = session['user']['name']
+
+        # Query the database for the user
+        user = AddUser.query.filter_by(name=user_name).first()
+
+        if user:
+            # Deserialize favorite_stocks and preferences
+            favorite_stocks = json.loads(user.favorite_stocks) if user.favorite_stocks else []
+            preferences = json.loads(user.preferences) if user.preferences else {
+                'theme': 'light',
+                'currency': 'USD',
+                'language': 'en',
+                'sectors': [],
+                'risk_tolerance': [],
+            }
+
+            # Store user info in Flask's `g` object
+            g.current_user = {
+                'name': user.name,
+                'favorite_stocks': favorite_stocks,
+                'preferences': preferences,
+            }
+
+# Make user data available to all templates globally
+@app.context_processor
+def inject_user():
+    """Inject the `current_user` into all templates."""
+    return dict(current_user=g.current_user)
+
 
 # Route for the home page (accessible only when logged in)
 @app.route('/')
 def home():
-    if 'user' in session:
-        user = session['user']  # Load user information from the session
-        return render_template('index.html', username=user['name'], favorite_stocks=user['favorite_stocks'])
+    if g.current_user:
+        return render_template('index.html', username=g.current_user['name'], favorite_stocks=g.current_user['favorite_stocks'])
     return redirect(url_for('login'))
-
 
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     return render_template('profile.html')
 
+
 @app.route('/preferences', methods=['GET', 'POST'])
 def preferences():
     return render_template('preferences.html')
 
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     return render_template('uploadcsv.html')
-
-
 
 
 # Route for login page
@@ -80,21 +103,9 @@ def login():
         if user and check_password_hash(user.password, password):
             session.permanent = True  # Set session lifetime
 
-            # Load favorite_stocks and preferences from the database (stored as JSON)
-            favorite_stocks = json.loads(user.favorite_stocks) if user.favorite_stocks else {}
-            preferences = json.loads(user.preferences) if user.preferences else {
-                'theme': 'light',
-                'currency': 'USD',
-                'language': 'en',
-                'sectors': [],
-                'risk_tolerance': [],
-            }
-
             # Store user information in the session
             session['user'] = {
                 'name': user.name,
-                'favorite_stocks': favorite_stocks,
-                'preferences': preferences,
             }
 
             flash('Login successful!', 'success')
@@ -102,7 +113,6 @@ def login():
         else:
             flash('Invalid username or password', 'danger')
     return render_template('login.html')
-
 
 
 # Route for the register page
@@ -139,7 +149,7 @@ def register():
 def search_stock():
     query = request.args.get('query', '').lower()
     if not query:
-        return jsonify({'error': 'No query provided'}), 400 
+        return jsonify({'error': 'No query provided'}), 400
 
     try:
         # API request to Finnhub's Symbol Lookup endpoint
@@ -163,8 +173,7 @@ def search_stock():
                 'symbol': match.get('symbol'),
                 'name': match.get('description'),
                 'type': match.get('type'),
-                'displaySymbol': match.get('displaySymbol')
-                # 'price' : yf.Ticker(match.get('symbol')).history(period="1d")['Close'].iloc[-1] or 0
+                'displaySymbol': match.get('displaySymbol'),
             }
             for match in matches
         ]
@@ -173,13 +182,14 @@ def search_stock():
     except Exception as e:
         return jsonify({'error': 'An internal server error occurred'}), 500
 
+
 @app.route('/add_stock', methods=['POST'])
 def add_stock():
     data = request.get_json()
 
-    if 'user' in session:
-        user_name = session['user']['name']
-        
+    if g.current_user:
+        user_name = g.current_user['name']
+
         # Query the database for the logged-in user
         user = AddUser.query.filter_by(name=user_name).first()
 
@@ -194,7 +204,7 @@ def add_stock():
             session['user']['favorite_stocks'] = json.loads(user.favorite_stocks)
 
             return jsonify({'favorites': session['user']['favorite_stocks']})
-    
+
     return jsonify({'error': 'User not logged in or session expired'}), 403
 
 
@@ -204,6 +214,7 @@ def logout():
     session.pop('user', None)  # Remove the user from session
     flash('You have been logged out!', 'info')
     return redirect(url_for('login'))
+
 
 # Ensure that the app context is active when creating the database
 if __name__ == '__main__':

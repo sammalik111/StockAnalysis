@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
             return {
                 message: 'Hello, Vue 3!'
             };
-        }
+        },
+        // Globally set the Vue delimiters to avoid Jinja2 conflicts
+        delimiters: ['[[', ']]']
     });
 
-    app.mount('.app');
+    app.mount('#app');
 });

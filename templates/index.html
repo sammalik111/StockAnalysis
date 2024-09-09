@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+    <script src="{{ url_for('static', filename='vue_input.js') }}"></script>
 </head>
 <body>
 
@@ -31,11 +32,8 @@
                 <option value="sector">Filter by Sector</option>
                 <option value="technology">Technology</option>
                 <option value="finance">Finance</option>
-                <!-- More filter options -->
             </select>
-            <label>
-                <input type="checkbox" /> Show only rising stocks
-            </label>
+            <label> <input type="checkbox" /> Show only rising stocks </label>
         </div>
         <div class="search-container">
             <input class="search-input" type="text" placeholder="Search stocks..." />
@@ -45,9 +43,28 @@
             </div>
         </div>
 
-        <div class="app">
-            <div> test : {{ message }} </div>
+
+        
+        <!-- Vue.js App Mount Point -->
+        <div id="app">
+            [[ message ]]
         </div>
+
+
+        <h1>Welcome, {{ current_user.name }}</h1>
+        <h2>Your Favorite Stocks</h2>
+        <ul>
+            {% for stock in current_user.favorite_stocks %}
+                <li>{{ stock }}</li>
+            {% else %}
+                <li>No favorite stocks added yet.</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Your Preferences</h2>
+        <p>Theme: {{ current_user.preferences.theme }}</p>
+        <p>Currency: {{ current_user.preferences.currency }}</p>
+        <p>Language: {{ current_user.preferences.language }}</p>
     
 
         <!-- Recommended Stocks -->
@@ -89,23 +106,8 @@
                 <!-- More stocks... -->
             </div>
         </section>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const app = Vue.createApp({
-                    data() {
-                        return {
-                            message: 'Hello, Vue 3!'
-                        };
-                    }
-                });
-            
-                app.mount('.app');
-            });
-            
-        </script>
-    </div>
 
-    
+    </div>
         
 </body>
 </html>
