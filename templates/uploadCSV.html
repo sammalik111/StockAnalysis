@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload CSV - Stock Monitoring App</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</head>
+<body>
+    <main>
+        <!-- Hamburger button to toggle the sidebar -->
+        <button class="toggle-sidebar-btn">☰</button>
+
+        <!-- Side navigation bar -->
+        <div class="sidenav">
+            <a href="/">Home</a>
+            <a href="profile">Profile</a>
+            <a href="preferences">Preferences</a>
+            <a href="upload">Upload CSV</a>
+            <a href="logout">Logout</a>
+        </div>
+
+
+        <div class="container">
+            <section class="csv-upload">
+                <h2>Upload Your Historical Data</h2>
+                <form action="/upload-csv" method="POST" enctype="multipart/form-data">
+                    <label for="csv-file">Choose CSV File:</label>
+                    <input type="file" id="csv-file" name="csv-file" accept=".csv" required>
+
+                    <button type="submit">Upload</button>
+                </form>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

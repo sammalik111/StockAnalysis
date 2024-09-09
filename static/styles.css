@@ -1,0 +1,329 @@
+/* General page background */
+body {
+    background: linear-gradient(20deg,#24292e, #000000); /* Dark gradient similar to Apple Weather */
+    color: #f0f0f0;
+    font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; /* Apple-inspired font */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row; /* Sidebar and main content are side by side */
+    align-items: flex-start;
+    transition: all 0.3s ease;
+}
+
+/* Sidebar (sidenav) that slides in and out */
+.sidenav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px; /* Sidebar width */
+    background: rgba(255, 255, 255, 0.1); /* Light translucent background */
+    backdrop-filter: blur(20px); /* Frosted glass effect */
+    color: #ffffff;
+    padding-top: 20px;
+    z-index: 1000;
+    transition: transform 0.3s ease, width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-right: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border on the right */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transform: translateX(0); /* Sidebar is visible by default */
+}
+
+/* Sidebar hidden state */
+.sidenav.hidden {
+    transform: translateX(-250px); /* Slide sidebar off the screen */
+}
+
+/* Sidebar links styling */
+.sidenav a {
+    text-decoration: none;
+    color: #f0f0f0; /* Bright white text */
+    font-size: 18px;
+    height: 70px;
+    line-height: 70px;
+    display: block;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.sidenav a:hover {
+    color: #82e9de; /* Light blue hover effect */
+}
+
+
+/* Main content container */
+.container {
+    background: rgba(25, 25, 25, 0.1); /* Translucent frosted glass background */
+    backdrop-filter: blur(30px); /* More pronounced frosted glass effect */
+    border-radius: 20px;
+    padding: 25px;
+    margin: 20px auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Softer, larger shadow for depth */
+    max-width: 90%; /* Expanded content width */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Light border for structure */
+    width: calc(100% - 600px); /* Adjust width to account for sidebar */
+    box-sizing: border-box;
+    transition: width 0.3s ease; /* Smooth transition when sidebar is hidden */
+}
+
+/* Expanded state when sidebar is hidden */
+.container.expanded {
+    width: 100%; /* Full width when sidebar is hidden */
+}
+
+/* Page titles */
+h1, h2 {
+    text-align: center;
+    color: #f0f0f0; /* Bright white text */
+    margin-bottom: 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px; /* Slightly spaced letters for cleaner look */
+}
+
+/* Footer (optional, for additional Apple-like style) */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #b0b0b0;
+    font-size: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+    backdrop-filter: blur(15px);
+}
+
+
+
+
+
+/* Form headings (Login/Register titles) */
+h1 {
+    text-align: center;
+    color: #f0f0f0;
+    margin-bottom: 30px;
+    font-weight: 600;
+    letter-spacing: 0.5px; /* Slightly spaced letters for a clean look */
+}
+
+/* Input fields styling */
+input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15); /* Translucent input background */
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.25); /* Highlighted input on focus */
+}
+
+/* Submit button styling */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.25); /* Translucent button */
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.35); /* Slightly lighter on hover */
+}
+
+/* Links (for Login/Register navigation) */
+a {
+    color: #82e9de; /* Light blue color for links */
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+}
+
+a:hover {
+    color: #ffffff; /* White on hover */
+}
+
+
+/* Hamburger button to toggle sidebar */
+.toggle-sidebar-btn {
+    position: fixed;
+    top: 20px;
+    left: 10px;
+    background-color: transparent;
+    border: none;
+    color: #f0f0f0;
+    font-size: 30px; /* Hamburger icon size */
+    cursor: pointer;
+    z-index: 1001; /* Ensure button stays above other elements */
+    transition: color 0.3s ease;
+    width: auto;
+    padding: 0%;
+    border-radius: 0px;
+    background: none;
+    margin-top: 0px;
+
+}
+
+.toggle-sidebar-btn:hover{
+    background: none;
+}
+
+.toggle-sidebar-btn:hover {
+    color: #82e9de; /* Light blue hover effect */
+}
+
+
+
+/* Scrollable container with continuous horizontal scrolling */
+.scrollable-container {
+    display: flex;
+    overflow: hidden; /* Hide any overflowing content */
+    white-space: nowrap; /* Prevent wrapping */
+    animation: scroll-left 30s linear infinite; /* Continuous scroll animation */
+    gap: 20px; /* Space between cards */
+    padding: 20px 0;
+}
+
+/* Stock card with a sleek, modern design */
+.stock-card {
+    display: inline-block; /* Ensure each card stays inline */
+    background: linear-gradient(135deg, #333, #444); /* Gradient background */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+    width: 200px; /* Card size */
+    color: #fff; /* White text */
+    position: relative; /* To position badges and icons */
+    text-align: center;
+}
+
+/* Stock title */
+.stock-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/* Stock price */
+.stock-card .price {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Stock change badge (up or down) */
+.stock-card .change {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: rgba(0, 255, 0, 0.7); /* Green for positive change */
+    color: #fff;
+}
+
+.stock-card.down .change {
+    background-color: rgba(255, 0, 0, 0.7); /* Red for negative change */
+}
+
+/* Icon to indicate stock performance */
+.stock-card .icon {
+    font-size: 30px;
+    margin-top: 10px;
+}
+
+/* Animation for horizontal scrolling */
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+
+/* Container for search results */
+.search-results {
+    margin-top: 20px;
+}
+
+/* Minimal list item styling */
+.search-list li {
+    background: rgba(255, 255, 255, 0.08); /* Lighter translucent background */
+    padding: 10px 15px; /* Slightly less padding for minimalism */
+    margin-bottom: 8px; /* Reduce space between items */
+    border-radius: 8px; /* Smaller rounded corners */
+    display: flex; /* Flexbox layout for aligning content */
+    justify-content: space-between; /* Align stock name and price */
+    align-items: center; /* Center the content vertically */
+    font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; /* Clean font */
+    font-size: 15px; /* Smaller font for minimal look */
+    color: #ffffff; /* White text */
+    transition: background 0.2s ease; /* Quick hover effect */
+}
+
+/* Hover effect for the list items */
+.search-list li:hover {
+    background: rgba(255, 255, 255, 0.15); /* Slightly brighter on hover */
+}
+
+/* Stock symbol and name styling */
+.search-list li strong {
+    font-weight: 500; /* Lighter font weight for a cleaner look */
+    font-size: 16px; /* Smaller font size */
+    color: #82e9de; /* Light blue for stock symbol */
+}
+
+/* Price styling */
+.search-list li .price {
+    font-weight: bold;
+    color: #e0e0e0; /* Light gray text for the price */
+    font-size: 16px; /* Slightly reduced font size */
+}
+
+/* Plus symbol styling */
+.search-list li .add-stock {
+    font-size: 20px; /* Slightly larger size for visibility */
+    color: #ffffff; /* White color for the plus icon */
+    cursor: pointer;
+    transition: transform 0.2s ease; /* Smooth hover effect */
+}
+
+.search-list li .add-stock:hover {
+    transform: scale(1.2); /* Scale up on hover */
+    color: #82e9de; /* Change to light blue on hover */
+}
+
+/* Styling for the search input box */
+.search-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05); /* Minimal transparent input background */
+    color: #ffffff; /* White text */
+    font-size: 15px;
+    transition: background 0.2s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.1); /* Highlight input when focused */
+}

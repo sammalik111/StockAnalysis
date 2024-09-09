@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preferences - Stock Monitoring App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
+</head>
+<body>
+    <!-- Hamburger button to toggle the sidebar -->
+    <button class="toggle-sidebar-btn">☰</button>
+
+    <!-- Side navigation bar -->
+    <div class="sidenav">
+        <a href="/">Home</a>
+        <a href="profile">Profile</a>
+        <a href="preferences">Preferences</a>
+        <a href="upload">Upload CSV</a>
+        <a href="logout">Logout</a>
+    </div>
+
+
+    <div class="container">
+        <h1 class="page-title">Stock Preferences</h1>
+        <div class="main-content">
+            <form action="/save-preferences" method="POST">
+                <label>
+                    <input type="checkbox" name="sector" value="finance"> Finance
+                </label>
+                <label>
+                    <input type="checkbox" name="sector" value="health"> Health
+                </label>
+                <label>
+                    <input type="checkbox" name="sector" value="technology"> Technology
+                </label>
+                <label>
+                    <input type="checkbox" name="sector" value="energy"> Energy
+                </label>
+
+                <button type="submit">Save Preferences</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
