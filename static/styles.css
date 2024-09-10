@@ -85,6 +85,7 @@ body {
     padding: 10px;
     display: flex; 
     align-items: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 
@@ -221,6 +222,49 @@ a:hover {
 .stock-card.down .change {
     color: #e57373;
 }
+
+
+/* ---------------------- SEARCH LIST ITEMS ------------------------ */
+
+
+/* List item styling for the search results */
+.search-list li {
+    background: rgba(55, 55, 55, 0.10);
+    backdrop-filter: blur(10px); 
+    border-radius: 12px; 
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    color: #f0f0f0; 
+    font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; 
+    font-size: 16px;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-list li:hover {
+    background: rgba(55, 55, 55, 0.20); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+    transform: translateY(-2px);
+}
+
+.search-list li strong {
+    font-weight: 600;
+    font-size: 18px;
+    color: #82e9de; 
+}
+
+/* Price styling */
+.search-list li .price {
+    color: #e0e0e0; 
+    font-size: 18px;
+}
+
+
+
+
 
 /* ---------------------- PREFERENCES INFORMATION ------------------------ */
 

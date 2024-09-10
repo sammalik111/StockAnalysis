@@ -29,20 +29,12 @@
     <div class="container">
         <!-- Page Title -->
         <header>
-            <h1>Stock Dashboard</h1>
+            <h1>STOCK DASHBOARD</h1>
              <p class="bio">Your personalized stock monitoring app. Track your favorite stocks and get the latest market insights.</p>
         </header>
 
-    
+
         <!-- Search box and filters -->
-        <div class="filter-container">
-            <select>
-                <option value="sector">Filter by Sector</option>
-                <option value="technology">Technology</option>
-                <option value="finance">Finance</option>
-            </select>
-            <label> <input type="checkbox" /> Show only rising stocks </label>
-        </div>
         <div class="search-container">
             <input class="search-input" type="text" placeholder="Search stocks..." />
             <div class="search-results">
@@ -58,10 +50,19 @@
             <button id="toggle-mode-btn">Toggle Theme</button>
         </div>
 
+        <div class="filter-container">
+            <select>
+                <option value="sector">Filter by Sector</option>
+                <option value="technology">Technology</option>
+                <option value="finance">Finance</option>
+            </select>
+            <label> <input type="checkbox" /> Show only rising stocks </label>
+        </div>
+
         <!-- Recommended Stocks -->
         <section>
             <div class="section-title modern-title">
-                <h2>My Stocks</h2>
+                <h2>MY STOCKS</h2>
             </div>
             <div class="scrollable-container">
                 {% for stock in current_user.favorite_stocks %}
@@ -79,7 +80,7 @@
         <!-- My Stocks -->
         <section>
             <div class="section-title modern-title">
-                <h2>Recommended Stocks</h2>
+                <h2>RECOMMENDED JOBS</h2>
             </div>
             <div class="scrollable-container">
                 <div class="stock-card">
@@ -108,7 +109,7 @@
         <!-- News -->
         <section>
             <div class="section-title modern-title">
-                <h2>Latest News</h2>
+                <h2>LATEST NEWS</h2>
             </div>
             <div class="news-container"></div>
         </section>
@@ -116,7 +117,7 @@
         <!-- Crypto -->
         <section>
             <div class="section-title modern-title">
-                <h2>Popular Cryptocurrency</h2>
+                <h2>POPULAR CRYPTOCURRENCY</h2>
             </div>
             <div class="crypto-container"></div>
         </section>

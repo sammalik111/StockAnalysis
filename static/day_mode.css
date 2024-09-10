@@ -449,6 +449,15 @@ body {
 }
 
 
+.news-card:hover{
+    background-color: #ddd; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
 .news-title {
     color: #333333; 
+}
+
+.news-title:hover {
+    color: #444; 
 }
