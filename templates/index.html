@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Dashboard - Stock Monitoring App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>StockAnalysis</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"> <!-- Icon for the webpage tab -->
+    <link id="theme-stylesheet" rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='day_mode.css') }}" id="day-mode-stylesheet" disabled>
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
     <script src="{{ url_for('static', filename='vue_input.js') }}"></script>
@@ -23,9 +25,15 @@
         <a href="logout">Logout</a>
     </div>
 
-    
     <!-- Main content container -->
     <div class="container">
+        <!-- Page Title -->
+        <header>
+            <h1>Stock Dashboard</h1>
+             <p class="bio">Your personalized stock monitoring app. Track your favorite stocks and get the latest market insights.</p>
+        </header>
+
+    
         <!-- Search box and filters -->
         <div class="filter-container">
             <select>
@@ -47,18 +55,14 @@
             <p>Theme: {{ current_user.preferences.theme }}</p>
             <p>Currency: {{ current_user.preferences.currency }}</p>
             <p>Language: {{ current_user.preferences.language }}</p>
-        </div>
-
-
-                
-        <!-- Vue.js App Mount Point -->
-        <div id="app">
-            [[ message ]]
+            <button id="toggle-mode-btn">Toggle Theme</button>
         </div>
 
         <!-- Recommended Stocks -->
         <section>
-            <h2>My Stocks</h2>
+            <div class="section-title modern-title">
+                <h2>My Stocks</h2>
+            </div>
             <div class="scrollable-container">
                 {% for stock in current_user.favorite_stocks %}
                     <div class="stock-card">
@@ -74,7 +78,9 @@
 
         <!-- My Stocks -->
         <section>
-            <h2>Recommended Stocks</h2>
+            <div class="section-title modern-title">
+                <h2>Recommended Stocks</h2>
+            </div>
             <div class="scrollable-container">
                 <div class="stock-card">
                     <h3>Stock A: LMN</h3>
@@ -86,21 +92,34 @@
                     <div class="price">$80.00</div>
                     <div class="change">-0.5%</div>
                 </div>
+                <div class="stock-card down">
+                    <h3>Stock C: HIJ</h3>
+                    <div class="price">$50.00</div>
+                    <div class="change">-0.6%</div>
+                </div>
+                <div class="stock-card">
+                    <h3>Stock F: FGI</h3>
+                    <div class="price">$53.00</div>
+                    <div class="change">-2.6%</div>
+                </div>
             </div>
         </section>
 
         <!-- News -->
         <section>
-            <h2>Latest News</h2>
-            <div class="newsContainer"></div>
+            <div class="section-title modern-title">
+                <h2>Latest News</h2>
+            </div>
+            <div class="news-container"></div>
         </section>
 
         <!-- Crypto -->
         <section>
-            <h2>Popular Cryptocurrency</h2>
-            <div class="cryptoContainer"></div>
+            <div class="section-title modern-title">
+                <h2>Popular Cryptocurrency</h2>
+            </div>
+            <div class="crypto-container"></div>
         </section>
-
 
     </div>
         

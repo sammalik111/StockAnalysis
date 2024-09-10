@@ -15,6 +15,18 @@ document.addEventListener('DOMContentLoaded', function () {
             container.classList.remove('expanded'); // Center it when sidebar is visible
         }
     });
+
+
+    // Initially set the theme to night mode
+    document.getElementById('theme-stylesheet').disabled = false;
+    document.getElementById('day-mode-stylesheet').disabled = true;
+
+    document.getElementById('toggle-mode-btn').addEventListener('click', () => {
+        const isNightMode = !document.getElementById('theme-stylesheet').disabled;
+
+        document.getElementById('theme-stylesheet').disabled = isNightMode;
+        document.getElementById('day-mode-stylesheet').disabled = !isNightMode;
+    });
     
 
     // Get the search input and list elements
@@ -118,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    let cryptoContainer = document.querySelector('.cryptoContainer');
+    let cryptoContainer = document.querySelector('.crypto-container');
     const cryptos = [
         { name: 'Bitcoin', id: 'btc-bitcoin' },
         { name: 'Ethereum', id: 'eth-ethereum' },
@@ -164,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Dynamically update the UI with the fetched data
                 cryptoContainer.innerHTML += `
                     <div class="crypto-card">
-                        <h3 class="cryptoTitle">${stock.name}</h3>
+                        <h3 class="crypto-title">${stock.name}</h3>
                         <div class="price">$${price}</div>
                         <div class="change">${change}%</div>
                     </div>
@@ -176,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     
-    let newsContainer = document.querySelector('.newsContainer');
+    let newsContainer = document.querySelector('.news-container');
     fetch('http://127.0.0.1:5000/news', {
         method: 'GET',
         headers: {
@@ -190,10 +202,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const news = data[i];
             newsContainer.innerHTML += `
                 <div class="news-card">
-                    <h3 class="newsTitle">${news.title}</h3>
-                    <div class="newsSource">${news.source}</div>
+                    <h3 class="news-title">${news.title}</h3>
+                    <div class="news-source">${news.source}</div>
                     <div> ${news.stock_name} </div>
-                    <a href="${news.url}" class="newsLink">Read More</a>
+                    <a href="${news.url}" class="news-link">Read More</a>
                 </div>`;
         }
     });
