@@ -2,6 +2,7 @@ from db import db
 import json
 from werkzeug.security import generate_password_hash
 
+
 class AddUser(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -13,7 +14,8 @@ class AddUser(db.Model):
     def __init__(self, name, password, favorite_stocks=None, preferences=None):
         self.name = name
         self.password = generate_password_hash(password)
-        self.favorite_stocks = json.dumps(favorite_stocks or [])  # Convert to JSON string
+        # Ensure favorite_stocks and preferences are stored as JSON strings
+        self.favorite_stocks = json.dumps(favorite_stocks or [])  # Default to empty list
         self.preferences = json.dumps(preferences or {
             'theme': 'light',
             'currency': 'USD',
@@ -23,10 +25,18 @@ class AddUser(db.Model):
         })
 
     def add_stock(self, stock_name):
-        # Load existing stocks, add new stock, and then update the JSON string
-        stocks = json.loads(self.favorite_stocks)
+        try:
+            stocks = json.loads(self.favorite_stocks)
+            if not isinstance(stocks, list):
+                stocks = []
+        except (json.JSONDecodeError, TypeError):
+            stocks = []
         stocks.append(stock_name)
+
         self.favorite_stocks = json.dumps(stocks)
+        db.session.commit()
+
+
 
     def set_preferences(self, new_preferences):
         # Set new preferences and convert them to a JSON string

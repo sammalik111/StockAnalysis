@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import yfinance as yf
 from db import db  # Import db from db.py
 import json
+from news import get_news  # Import the get_news function
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Change this in production
@@ -88,6 +89,31 @@ def preferences():
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     return render_template('uploadcsv.html')
+
+@app.route('/news', methods=['GET'])
+def news():
+    """Endpoint to get news articles for all favorite stocks of the current user."""
+    all_articles = []
+    favorite_stocks = g.current_user.get('favorite_stocks', [])
+
+    if not favorite_stocks:
+        return jsonify({'error': 'No favorite stocks found'}), 400
+
+    for stock_name in favorite_stocks:
+        try:
+            articles = get_news(stock_name)
+            for article in articles:
+                all_articles.append({
+                    'title': article['title'],
+                    'stock_name': stock_name,
+                    'link': article['link'],
+                    'source': article['source'],    
+                })
+        except Exception as e:
+            print(f"Error fetching news for stock '{stock_name}': {e}")
+
+    return all_articles
+
 
 
 # Route for login page
@@ -195,7 +221,7 @@ def add_stock():
 
         if user:
             # Add the stock symbol to the user's favorite stocks
-            user.add_stock(data.get('symbol'), {"price": 100})  # Example stock data
+            user.add_stock(data.get('symbol'))  # Example stock data
 
             # Commit the change to the database
             db.session.commit()

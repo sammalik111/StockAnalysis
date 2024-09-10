@@ -1,90 +1,90 @@
 /* General page background */
 body {
-    background: linear-gradient(20deg,#24292e, #000000); /* Dark gradient similar to Apple Weather */
+    background: linear-gradient(20deg,#24292e, #000000); 
     color: #f0f0f0;
-    font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; /* Apple-inspired font */
+    font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
     margin: 0;
     padding: 0;
     min-height: 100vh;
     display: flex;
-    flex-direction: row; /* Sidebar and main content are side by side */
-    align-items: flex-start;
+    flex-direction: row; 
     transition: all 0.3s ease;
 }
 
-/* Sidebar (sidenav) that slides in and out */
+/* Sidebar (sidenav) */
 .sidenav {
     position: fixed;
     top: 0;
     left: 0;
     height: 100%;
-    width: 250px; /* Sidebar width */
-    background: rgba(55, 55, 55, 0.5); /* Light translucent background */
-    backdrop-filter: blur(20px); /* Frosted glass effect */
+    width: 20%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
     color: #ffffff;
-    padding-top: 20px;
+    padding-top: 70px;
     z-index: 1000;
-    transition: transform 0.3s ease, width 0.3s ease;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    border-right: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border on the right */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-    transform: translateX(0); /* Sidebar is visible by default */
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+    transition: transform 0.3s ease, width 0.3s ease;
 }
 
 /* Sidebar hidden state */
 .sidenav.hidden {
-    transform: translateX(-250px); /* Slide sidebar off the screen */
+    transform: translateX(-100%); 
+    
 }
 
 /* Sidebar links styling */
 .sidenav a {
     text-decoration: none;
-    color: #f0f0f0; /* Bright white text */
-    font-size: 18px;
-    height: 70px;
-    line-height: 70px;
-    display: block;
-    text-align: center;
-    transition: color 0.3s ease;
+    color: #e0e0e0;
+    font-size: 16px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    transition: background 0.3s ease, color 0.3s ease;
+    border-left: 4px solid transparent; /* Indicator for active state */
 }
 
 .sidenav a:hover {
-    color: #82e9de; /* Light blue hover effect */
+    background: rgba(255, 255, 255, 0.1); 
+    color: #00bcd4;
+    border-left: 4px solid #00bcd4;
 }
 
 
 /* Main content container */
 .container {
-    background: rgba(25, 25, 25, 0.1); /* Translucent frosted glass background */
-    backdrop-filter: blur(30px); /* More pronounced frosted glass effect */
+    background: rgba(25, 25, 25, 0.1);
+    backdrop-filter: blur(30px);
     border-radius: 20px;
     padding: 25px;
     margin: 20px auto;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* Softer, larger shadow for depth */
-    max-width: 90%; /* Expanded content width */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Light border for structure */
-    width: calc(100% - 600px); /* Adjust width to account for sidebar */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    width: 70%; 
+    margin-left: 25%; 
     box-sizing: border-box;
-    transition: width 0.3s ease; /* Smooth transition when sidebar is hidden */
+    transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
-/* Expanded state when sidebar is hidden */
+
 .container.expanded {
-    width: 100%; /* Full width when sidebar is hidden */
+    margin-left: 13%;
 }
 
-/* Page titles */
+
+
 h1, h2 {
     text-align: center;
-    color: #f0f0f0; /* Bright white text */
+    color: #f0f0f0; 
     margin-bottom: 20px;
     font-weight: 600;
-    letter-spacing: 0.5px; /* Slightly spaced letters for cleaner look */
+    letter-spacing: 0.5px; 
 }
 
-/* Footer (optional, for additional Apple-like style) */
 footer {
     text-align: center;
     padding: 20px;
@@ -96,10 +96,6 @@ footer {
 }
 
 
-
-
-
-/* Form headings (Login/Register titles) */
 h1 {
     text-align: center;
     color: #f0f0f0;
@@ -114,15 +110,16 @@ input[type="text"], input[type="password"], input[type="email"] {
     padding: 12px;
     margin: 10px 0;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.15); /* Translucent input background */
+    background: rgba(55,55,55, 0.15); /* Translucent input background */
     border: none;
     color: #ffffff;
     font-size: 16px;
+    border: #333 1px solid ;
 }
 
 input:focus {
     outline: none;
-    background: rgba(255, 255, 255, 0.25); /* Highlighted input on focus */
+    background: rgba(255, 255, 255, 0.25); 
 }
 
 /* Submit button styling */
@@ -140,12 +137,11 @@ button {
 }
 
 button:hover {
-    background: rgba(255, 255, 255, 0.35); /* Slightly lighter on hover */
+    background: rgba(255, 255, 255, 0.35); 
 }
 
-/* Links (for Login/Register navigation) */
 a {
-    color: #82e9de; /* Light blue color for links */
+    color: #82e9de; 
     text-decoration: none;
     display: block;
     text-align: center;
@@ -153,7 +149,7 @@ a {
 }
 
 a:hover {
-    color: #ffffff; /* White on hover */
+    color: #ffffff; 
 }
 
 
@@ -162,15 +158,14 @@ a:hover {
 /* ---------------------- SIDE BAR ------------------------ */
 
 
-/* Hamburger button to toggle sidebar */
 .toggle-sidebar-btn {
     position: fixed;
     top: 20px;
-    left: 10px;
+    left: 20px;
     background-color: transparent;
     border: none;
     color: #f0f0f0;
-    font-size: 30px; /* Hamburger icon size */
+    font-size: 30px;
     cursor: pointer;
     z-index: 1001; /* Ensure button stays above other elements */
     transition: color 0.3s ease;
@@ -184,10 +179,7 @@ a:hover {
 
 .toggle-sidebar-btn:hover{
     background: none;
-}
-
-.toggle-sidebar-btn:hover {
-    color: #82e9de; /* Light blue hover effect */
+    color: #82e9de; 
 }
 
 
@@ -197,147 +189,263 @@ a:hover {
 /* ---------------------- HORIZONTAL CARD STACK DESIGN ------------------------ */
 
 
-/* Scrollable container with continuous horizontal scrolling */
+/* Scrollable container with horizontal scrolling inside its bounds */
 .scrollable-container {
     display: flex;
-    overflow: hidden; /* Hide any overflowing content */
-    white-space: nowrap; /* Prevent wrapping */
-    animation: scroll-left 30s linear infinite; /* Continuous scroll animation */
-    gap: 20px; /* Space between cards */
-    padding: 20px 0;
+    overflow-x: scroll; 
+    white-space: nowrap;
+    padding: 20px;
+    gap: 20px; 
+    scrollbar-width: none; 
+}
+
+.scrollable-container::-webkit-scrollbar {
+    display: none; 
 }
 
 /* Stock card with a sleek, modern design */
 .stock-card {
-    display: inline-block; /* Ensure each card stays inline */
-    background: linear-gradient(135deg, #333, #444); /* Gradient background */
-    backdrop-filter: blur(10px); /* Frosted glass effect */
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
-    width: 200px; /* Card size */
-    color: #fff; /* White text */
-    position: relative; /* To position badges and icons */
+    display: inline-block;
+    background: linear-gradient(145deg, #1a1a1a, #2a2a2a); 
+    backdrop-filter: blur(10px); 
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.1); 
+    width: 200px;
+    height: 100px;
+    color: #fff;
     text-align: center;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0; 
+    animation: scroll-left 10s linear infinite;
 }
 
-/* Stock title */
+.stock-card:hover {
+    transform: translateY(-8px) scale(1.05); 
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 255, 255, 0.3); 
+}
+
 .stock-card h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    color: #82e9de; 
 }
 
-/* Stock price */
 .stock-card .price {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    color: #e0e0e0;
 }
 
-/* Stock change badge (up or down) */
 .stock-card .change {
     position: absolute;
     top: 10px;
     right: 10px;
-    padding: 5px 10px;
-    border-radius: 12px;
-    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 16px;
     font-weight: bold;
-    background-color: rgba(0, 255, 0, 0.7); /* Green for positive change */
+    background-color: rgba(0, 255, 0, 0.8); /* Green for positive change */
     color: #fff;
 }
 
 .stock-card.down .change {
-    background-color: rgba(255, 0, 0, 0.7); /* Red for negative change */
+    background-color: rgba(255, 0, 0, 0.8); /* Red for negative change */
 }
 
-/* Icon to indicate stock performance */
 .stock-card .icon {
-    font-size: 30px;
-    margin-top: 10px;
+    font-size: 35px;
+    margin-top: 15px;
+    color: #ffffff;
+    opacity: 0.8;
 }
 
-/* Animation for horizontal scrolling */
 @keyframes scroll-left {
     0% {
-        transform: translateX(0);
+        transform: translateX(100%);
     }
     100% {
-        transform: translateX(-100%);
+        transform: translateX(-100%); 
     }
 }
+
 
 
 
 
 /* ---------------------- SEARCH BAR ------------------------ */
 
-/* Container for search results */
 .search-results {
     margin-top: 20px;
 }
 
-/* Minimal list item styling */
 .search-list li {
-    background: rgba(255, 255, 255, 0.08); /* Lighter translucent background */
-    padding: 10px 15px; /* Slightly less padding for minimalism */
-    margin-bottom: 8px; /* Reduce space between items */
-    border-radius: 8px; /* Smaller rounded corners */
-    display: flex; /* Flexbox layout for aligning content */
-    justify-content: space-between; /* Align stock name and price */
-    align-items: center; /* Center the content vertically */
-    font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; /* Clean font */
-    font-size: 15px; /* Smaller font for minimal look */
-    color: #ffffff; /* White text */
-    transition: background 0.2s ease; /* Quick hover effect */
+    background: rgba(55, 55, 55, 0.2); 
+    padding: 10px 15px; 
+    margin-bottom: 8px;
+    border-radius: 8px; 
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; 
+    font-size: 15px; 
+    color: #ffffff;
+    transition: background 0.2s ease;
 }
 
-/* Hover effect for the list items */
 .search-list li:hover {
-    background: rgba(255, 255, 255, 0.15); /* Slightly brighter on hover */
+    background: rgba(55, 55, 55, 0.5); 
 }
 
-/* Stock symbol and name styling */
 .search-list li strong {
-    font-weight: 500; /* Lighter font weight for a cleaner look */
-    font-size: 16px; /* Smaller font size */
-    color: #82e9de; /* Light blue for stock symbol */
+    font-weight: 500; 
+    font-size: 16px; 
+    color: #82e9de; 
 }
 
-/* Price styling */
 .search-list li .price {
     font-weight: bold;
-    color: #e0e0e0; /* Light gray text for the price */
-    font-size: 16px; /* Slightly reduced font size */
+    color: #e0e0e0; 
+    font-size: 16px;  
 }
 
-/* Plus symbol styling */
+
 .search-list li .add-stock {
-    font-size: 20px; /* Slightly larger size for visibility */
-    color: #ffffff; /* White color for the plus icon */
+    font-size: 20px; 
+    color: #ffffff; 
     cursor: pointer;
-    transition: transform 0.2s ease; /* Smooth hover effect */
+    transition: transform 0.2s ease; 
 }
 
 .search-list li .add-stock:hover {
-    transform: scale(1.2); /* Scale up on hover */
-    color: #82e9de; /* Change to light blue on hover */
+    transform: scale(1.2); 
+    color: #82e9de;
 }
 
-/* Styling for the search input box */
 .search-input {
     width: 100%;
     padding: 10px 15px;
     border: none;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05); /* Minimal transparent input background */
-    color: #ffffff; /* White text */
+    background: rgba(255, 255, 255, 0.05); 
+    color: #ffffff; 
     font-size: 15px;
     transition: background 0.2s ease;
 }
 
 .search-input:focus {
     outline: none;
-    background: rgba(255, 255, 255, 0.1); /* Highlight input when focused */
+    background: rgba(255, 255, 255, 0.1); 
+}
+
+
+
+/* ---------------------- PREFERENCES INFORMATION ------------------------ */
+
+.preferences-list{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+}
+ 
+.preferences-list p {
+    border: #222 solid 2px;
+    border-radius: 10px;
+    padding: 10px;
+    background: rgba(55, 55, 55, 0.3);
+
+}
+
+.preferences-list p:hover {
+    color: #82e9de;
+    transition: color 0.3s ease; /* Move the transition before the color */
+}
+
+
+
+/* ---------------------- POPULAR CRYPTO GRID TEMPLATE ------------------------ */
+
+.cryptoContainer{
+    display: grid;
+    /* make the grid a 4x4 grid */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.crypto-card{
+    width: 150px;
+    height: 100px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    margin : 10px 10px;
+}
+
+.cryptoTitle{
+    color: #82e9de;
+    font-size: 15px;
+}
+
+
+
+
+
+
+
+
+/* ---------------------- NEWS ARTICLES STYLING ------------------------ */
+
+.newsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.news-card {
+    background-color: #1e1e1e; 
+    border: 1px solid #333; 
+    border-radius: 8px; 
+    padding: 16px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); 
+    color: #e0e0e0; 
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.newsTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    color: #ffffff; 
+}
+
+.newsSource {
+    font-size: 14px;
+    color: #aaa;
+    margin: 8px 0;
+}
+
+.newsLink {
+    display: inline-block;
+    font-size: 14px;
+    color: #1e90ff; 
+    text-decoration: none;
+    border-bottom: 1px solid #1e90ff; 
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.newsLink:hover {
+    color: #ff4500; 
+    border-color: #ff4500; 
+}
+
+.news-card:hover {
+    background-color: #252525; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); 
 }
