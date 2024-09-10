@@ -130,62 +130,52 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    let cryptoContainer = document.querySelector('.crypto-container');
-    const cryptos = [
-        { name: 'Bitcoin', id: 'btc-bitcoin' },
-        { name: 'Ethereum', id: 'eth-ethereum' },
-        { name: 'Ripple', id: 'xrp-xrp' },
-        { name: 'Polkadot', id: 'dot-polkadot' },
-        { name: 'Chainlink', id: 'link-chainlink' },
-        { name: 'Uniswap', id: 'uni-uniswap' },
-        { name: 'Binance Coin', id: 'bnb-binance-coin' },
-        { name: 'DOGE/ETH', id: 'doge-dogecoin' },
-    ];
+    // let cryptoContainer = document.querySelector('.crypto-container');
+    // const cryptos = [
+    //     { name: 'Bitcoin', id: 'btc-bitcoin' },
+    //     { name: 'Ethereum', id: 'eth-ethereum' },
+    //     { name: 'Ripple', id: 'xrp-xrp' },
+    //     { name: 'Polkadot', id: 'dot-polkadot' },
+    //     { name: 'Chainlink', id: 'link-chainlink' },
+    //     { name: 'Uniswap', id: 'uni-uniswap' },
+    //     { name: 'Binance Coin', id: 'bnb-binance-coin' },
+    //     { name: 'DOGE/ETH', id: 'doge-dogecoin' },
+    // ];
 
-    const fetchCryptoData = (crypto) => {
-        const apiUrl = `https://api.coinpaprika.com/v1/tickers/${crypto.id}`;
-        const stockUrl = `/search_stock?query=${crypto.name}`;
+    // const fetchCryptoData = (crypto) => {
+    //     const apiUrl = `https://api.coinpaprika.com/v1/tickers/${crypto.id}`;
+    //     const stockUrl = `/search_stock?query=${crypto.name}`;
 
-        // Parallel fetches for price and stock data
-        return Promise.all([
-            fetch(apiUrl).then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok for crypto data');
-                }
-                return response.json();
-            }),
-            fetch(stockUrl).then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok for stock data');
-                }
-                return response.json();
-            })
-        ]);
-    };
+    //     // Parallel fetches for price and stock data
+    //     return Promise.all([
+    //         fetch(apiUrl).then(response => response.json()),
+    //         fetch(stockUrl).then(response => response.json())
+    //     ]);
+    // };
 
-    const promises = cryptos.map(crypto => fetchCryptoData(crypto));
+    // const promises = cryptos.map(crypto => fetchCryptoData(crypto));
 
-    // Wait for all promises to resolve
-    Promise.all(promises)
-        .then(results => {
-            results.forEach(([cryptoData, stockData]) => {
-                const price = cryptoData.quotes.USD.price.toFixed(2);
-                const change = cryptoData.quotes.USD.percent_change_24h.toFixed(2);
-                const stock = stockData[0];
+    // // Wait for all promises to resolve
+    // Promise.all(promises)
+    //     .then(results => {
+    //         results.forEach(([cryptoData, stockData]) => {
+    //             const price = cryptoData.quotes.USD.price.toFixed(2);
+    //             const change = cryptoData.quotes.USD.percent_change_24h.toFixed(2);
+    //             const stock = stockData[0];
 
-                // Dynamically update the UI with the fetched data
-                cryptoContainer.innerHTML += `
-                    <div class="crypto-card">
-                        <h3 class="crypto-title">${stock.name}</h3>
-                        <div class="price">$${price}</div>
-                        <div class="change">${change}%</div>
-                    </div>
-                `;
-            });
-        })
-        .catch(err => {
-            console.error('Error fetching data:', err);
-        });
+    //             // Dynamically update the UI with the fetched data
+    //             cryptoContainer.innerHTML += `
+    //                 <div class="crypto-card">
+    //                     <h3 class="crypto-title">${stock.name}</h3>
+    //                     <div class="price">$${price}</div>
+    //                     <div class="change">${change}%</div>
+    //                 </div>
+    //             `;
+    //         });
+    //     })
+    //     .catch(err => {
+    //         console.error('Error fetching data:', err);
+    //     });
 
     
     let newsContainer = document.querySelector('.news-container');
