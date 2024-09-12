@@ -1,0 +1,66 @@
+/* Basic styling for body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Light gray background, adjust as needed */
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for sections */
+section {
+    margin: 20px;
+    padding: 20px;
+    background: rgba(20, 34, 46, 0.85); /* Darker background for sections */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Heading styles */
+h2 {
+    color: #c4d7e0;
+    border-bottom: 2px solid #007bff; /* Blue border for headers */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto; /* Enable horizontal scroll if needed */
+}
+
+thead {
+    background-color: #007bff; /* Dark blue background for header */
+    color: white;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #555; /* Darker border color */
+}
+
+tr:hover {
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue highlight on hover */
+}
+
+/* Add scroll for long tables */
+.table-container {
+    max-height: 400px; /* Adjust height as needed */
+    overflow-y: auto;
+    border: 1px solid #333; /* Dark border color */
+    border-radius: 4px;
+}
+
+
+.forecast-chart {
+    background-color: #0e1a26; /* Match the dark theme */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    width: 100%;
+}
+
+
+p {
+    padding-left: 50px;
+}

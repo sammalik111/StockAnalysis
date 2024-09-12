@@ -7,6 +7,8 @@ import yfinance as yf
 from db import db  # Import db from db.py
 import json
 from news import get_news  # Import the get_news function
+from stock_data import stock_data
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Change this in production
@@ -241,7 +243,13 @@ def logout():
     flash('You have been logged out!', 'info')
     return redirect(url_for('login'))
 
-
+@app.route('/stock', methods=['GET'])
+def stock_page():
+    symbol = request.args.get('query', 'AAPL')  # Default to 'AAPL' if no query param
+    this_data = stock_data(symbol)
+    return this_data 
+    
+    
 # Ensure that the app context is active when creating the database
 if __name__ == '__main__':
     with app.app_context():
