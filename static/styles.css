@@ -163,6 +163,12 @@ input:focus {
     width: 250px;
 }
 
+.stock-card:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+    transform: translateY(-5px); /* Lift effect on hover */
+    transition: transform 0.3s ease;
+} 
+
 .stock-card h3 {
     font-size: 20px;
     margin: 0;
@@ -397,3 +403,28 @@ input:focus {
     margin: 16px 0px ;
     color: white;
 }
+
+
+
+
+/* ---------------------- FILTERS STYLES ------------------------ */
+
+
+/* Minimal design for the checkbox label */
+label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #f0f0f0; /* Light text color for minimal look */
+}
+
+input.rising {
+    accent-color: #333; /* Dark color to blend with minimal theme */
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+input.rising:checked {
+    accent-color: #007bff; /* Highlight color for checked state */
+}
+

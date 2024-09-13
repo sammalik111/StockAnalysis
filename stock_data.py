@@ -14,9 +14,11 @@ def get_stock_summary(symbol):
     try:
         # Fetch stock price and percentage change
         price = stock_info.get_live_price(symbol)
+        print("this is price: ",price)
         historical_data = stock_info.get_data(symbol, period="1d", interval="1m")
         last_close = historical_data['close'].iloc[-2]
         change = (price - last_close) / last_close * 100
+        print("this is change: ",change)
         
         return price, f"{change:.2f}%"
     except Exception as e:
@@ -41,7 +43,7 @@ def generate_body_content(stock_symbol, stock_data, forecast_html):
             </h1>
             <div class="stock-price">
                 <span class="price">${price}</span>
-                <span class="change {'negative' if change.startswith('-') else ''}">{change}</span>
+                <span class="change">{change}</span>
             </div>
         </div>
     </section>

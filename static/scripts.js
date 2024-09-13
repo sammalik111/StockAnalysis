@@ -162,94 +162,133 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // let cryptoContainer = document.querySelector('.crypto-container');
-    // const cryptos = [
-    //     { name: 'Bitcoin', id: 'btc-bitcoin' },
-    //     { name: 'Ethereum', id: 'eth-ethereum' },
-    //     { name: 'Ripple', id: 'xrp-xrp' },
-    //     { name: 'Polkadot', id: 'dot-polkadot' },
-    //     { name: 'Chainlink', id: 'link-chainlink' },
-    //     { name: 'Uniswap', id: 'uni-uniswap' },
-    //     { name: 'Binance Coin', id: 'bnb-binance-coin' },
-    //     { name: 'DOGE/ETH', id: 'doge-dogecoin' },
-    // ];
+    let cryptoContainer = document.querySelector('.crypto-container');
+    const cryptos = [
+        { name: 'Bitcoin', id: 'btc-bitcoin' },
+        { name: 'Ethereum', id: 'eth-ethereum' },
+        { name: 'Ripple', id: 'xrp-xrp' },
+        { name: 'Polkadot', id: 'dot-polkadot' },
+        { name: 'Chainlink', id: 'link-chainlink' },
+        { name: 'Uniswap', id: 'uni-uniswap' },
+        { name: 'Binance Coin', id: 'bnb-binance-coin' },
+        { name: 'DOGE/ETH', id: 'doge-dogecoin' },
+    ];
 
-    // const fetchCryptoData = (crypto) => {
-    //     const apiUrl = `https://api.coinpaprika.com/v1/tickers/${crypto.id}`;
-    //     const stockUrl = `/search_stock?query=${crypto.name}`;
+    const fetchCryptoData = (crypto) => {
+        const apiUrl = `https://api.coinpaprika.com/v1/tickers/${crypto.id}`;
+        const stockUrl = `/search_stock?query=${crypto.name}`;
 
-    //     // Parallel fetches for price and stock data
-    //     return Promise.all([
-    //         fetch(apiUrl).then(response => response.json()),
-    //         fetch(stockUrl).then(response => response.json())
-    //     ]);
-    // };
+        // Parallel fetches for price and stock data
+        return Promise.all([
+            fetch(apiUrl).then(response => response.json()),
+            fetch(stockUrl).then(response => response.json())
+        ]);
+    };
 
-    // const promises = cryptos.map(crypto => fetchCryptoData(crypto));
+    const promises = cryptos.map(crypto => fetchCryptoData(crypto));
 
-    // // Wait for all promises to resolve
-    // Promise.all(promises)
-    //     .then(results => {
-    //         results.forEach(([cryptoData, stockData]) => {
-    //             const price = cryptoData.quotes.USD.price.toFixed(2);
-    //             const change = cryptoData.quotes.USD.percent_change_24h.toFixed(2);
-    //             const stock = stockData[0];
+    // Wait for all promises to resolve
+    Promise.all(promises)
+        .then(results => {
+            results.forEach(([cryptoData, stockData]) => {
+                const price = cryptoData.quotes.USD.price.toFixed(2);
+                const change = cryptoData.quotes.USD.percent_change_24h.toFixed(2);
+                const stock = stockData[0];
+                const positiveChange = change[0] == '-' ? 'negative' : 'positive';
 
-    //             // Dynamically update the UI with the fetched data
-    //             cryptoContainer.innerHTML += `
-    //                 <div class="crypto-card">
-    //                     <div class="crypto-name">
-    //                         ${ stock.name }
-    //                     </div>
-    //                     <div class="crypto-stats">
-    //                         <div class="price">$${ price }</div>
-    //                         <div class="change positive">${ change }%</div> <!-- Use 'negative' class for negative change -->
-    //                     </div>
-    //                 </div>
-    //             `;
-    //         });
-    //     })
-    //     .catch(err => {
-    //         console.error('Error fetching data:', err);
-    //     });
+                // Dynamically update the UI with the fetched data
+                cryptoContainer.innerHTML += `
+                    <div class="crypto-card">
+                        <div class="crypto-name">
+                            ${ stock.name }
+                        </div>
+                        <div class="crypto-stats">
+                            <div class="price">$${ price }</div>
+                            <div class="change ${positiveChange}">${ change }%</div>
+                        </div>
+                    </div>
+                `;
+            });
+        })
+        .catch(err => {
+            console.error('Error fetching data:', err);
+        });
 
     
-    // let newsContainer = document.querySelector('.news-container');
-    // fetch('http://127.0.0.1:5000/news', {
-    //     method: 'GET',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     }
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //     console.log(data);
-    //     for (let i = 0; i < data.length; i++){
-    //         const news = data[i];
-    //         newsContainer.innerHTML += `
-    //             <div class="news-card">
-    //                 <h3 class="news-title">${news.title}</h3>
-    //                 <div class="news-source">${news.source}</div>
-    //                 <div> ${news.stock_name} </div>
-    //                 <a href="${news.url}" class="news-link">Read More</a>
-    //             </div>`;
-    //     }
-    // });
+
+    let newsContainer = document.querySelector('.news-container');
+    fetch('http://127.0.0.1:5000/news', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        for (let i = 0; i < data.length; i++){
+            const news = data[i];
+            newsContainer.innerHTML += `
+                <div class="news-card">
+                    <h3 class="news-title">${news.title}</h3>
+                    <div class="news-source">${news.source}</div>
+                    <div> ${news.stock_name} </div>
+                    <a href="${news.url}" class="news-link">Read More</a>
+                </div>`;
+        }
+    });
 
 
-    // Add an event listener to the document to handle clicks
+    
+    // Use event delegation
     document.addEventListener('click', function (e) {
-        // Check if the clicked element has the 'stock-card' class
-        if (e.target.classList.contains('stock-card')) {
-            // Get the symbol from the data attribute
-            const symbol = e.target.children[0].innerHTML;
-            
+        // Handle clicks on stock cards
+        if (e.target.closest('.stock-card')) {
+            const stockCard = e.target.closest('.stock-card');
+            const symbol = stockCard.querySelector('h3').innerText; // Adjust selector based on actual HTML structure
             if (symbol) {
                 // Redirect to the stock page with the symbol as a query parameter
                 window.location.href = `/stock?query=${encodeURIComponent(symbol)}`;
             } else {
                 console.error('Stock symbol not found.');
             }
+        }
+
+        // Handle checkbox changes
+        if (e.target.matches('.rising')) {
+            const risingCheckbox = e.target;
+            console.log('Rising checkbox clicked');
+            if (risingCheckbox.checked) {
+                // Hide stock cards with negative change
+                document.querySelectorAll('.stock-card').forEach(element => {
+                    const changeElement = element.querySelector('.change');
+                    if (changeElement && changeElement.classList.contains('negative')) {
+                        element.style.display = 'none'; // Hide the stock card
+                    }
+                });
+            } else {
+                // Show all stock cards
+                document.querySelectorAll('.stock-card').forEach(element => {
+                    element.style.display = 'block'; // Show the stock card
+                });
+            }
+        }
+    });
+
+
+
+    // Add classes based on the change percentage
+    document.querySelectorAll('.change').forEach(element => {
+        // Get the text content of the element
+        const content = element.textContent.trim();
+        
+        // Check if the content starts with '-'
+        if (content.startsWith('-')) {
+            // Add 'negative' class
+            element.classList.add('negative');
+        } else {
+            // Add 'positive' class
+            element.classList.add('positive');
         }
     });
 
