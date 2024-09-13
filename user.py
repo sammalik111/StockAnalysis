@@ -36,6 +36,18 @@ class AddUser(db.Model):
         self.favorite_stocks = json.dumps(stocks)
         db.session.commit()
 
+    def remove_stock(self, stock_name):
+        try:
+            stocks = json.loads(self.favorite_stocks)
+            if not isinstance(stocks, list):
+                stocks = []
+        except (json.JSONDecodeError, TypeError):
+            stocks = []
+
+        if stock_name in stocks:
+            stocks.remove(stock_name)
+            self.favorite_stocks = json.dumps(stocks)
+            db.session.commit()
 
 
     def set_preferences(self, new_preferences):

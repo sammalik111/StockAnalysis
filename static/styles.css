@@ -145,30 +145,54 @@ input:focus {
     white-space: nowrap;
     padding: 20px;
     gap: 20px;
-    scrollbar-width: none;
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
 }
 
 .scrollable-container::-webkit-scrollbar {
-    display: none;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-    width: 200px;
-    height: 120px;
-    color: #fff;
-    text-align: center;
-    position: relative;
+    display: none; /* Hide scrollbar in WebKit browsers */
 }
 
-.stock-card{
+.stock-card {
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 10px; 
+    background: rgba(20, 34, 46, 0.9);
+    color: #00d4ff;
+    margin-bottom: 15px;
+    position: relative;
+    transition: transform 0.3s ease; 
+    width: 250px;
 }
 
-.stock-card:hover {
-    transform: scale(1.05);
-    transition: transform 0.3s ease;
+.stock-card h3 {
+    font-size: 20px;
+    margin: 0;
+    color: #00d4ff; 
+    display: inline; 
 }
+
+.remove-stock {
+    background: rgba(70, 65, 65, 0.2); /* Red background */
+    border: none;
+    color: white; 
+    font-size: 20px; 
+    padding: 5px 10px; 
+    border-radius: 5px; 
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+}
+
+.remove-stock:hover {
+    background-color:  rgba(101, 42, 42, 0.8); /* Red background */
+    transform: scale(1.1); 
+}
+
+.change.negative {
+    color: red; /* Color for negative change */
+}
+
 
 .add-stock:hover {
     color: #00d4ff;
@@ -256,32 +280,70 @@ input:focus {
     color: #0e1a26; /* Dark text on hover */
 }
 
+.news-source{
+    color: #00d4ff;
+}
 
 
 
 /* ---------------------- POPULAR CRYPTO GRID TEMPLATE ------------------------ */
 
-.crypto-container{
+.crypto-container {
     display: grid;
-    /* make the grid a 4x4 grid */
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     margin-top: 20px;
 }
 
 .crypto-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 200px;
     height: 120px;
     background: rgba(20, 34, 46, 0.9); /* Match container background */
     border-radius: 10px;
     color: #00d4ff; /* Aqua color for title */
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional shadow for depth */
 }
 
-.crypto-title {
+.crypto-name {
     font-size: 16px;
-    margin-bottom: 8px;
     font-weight: 600;
 }
+
+.crypto-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align to the right side */
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #c4d7e0;
+}
+
+.change {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.change.positive {
+    color: #82e9de; /* Aqua color for positive change */
+}
+
+.change.negative {
+    color: #ff6b6b; /* Red color for negative change */
+}
+
+.stock-name{
+    color:#00d4ff;
+}
+
+
 
 /* ---------------------- PREFERENCES INFORMATION ------------------------ */
 
@@ -305,18 +367,6 @@ input:focus {
     transition: color 0.3s ease; /* Move the transition before the color */
 }
 
-
-.price {
-    font-size: 20px;
-    margin-bottom: 6px;
-    font-weight: bold;
-    color: #ffffff;
-}
-
-.change {
-    font-size: 14px;
-    color: #82e9de;
-}
 
 /* Down indicator for negative price changes */
 .crypto-card.down .change {

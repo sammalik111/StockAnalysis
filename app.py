@@ -222,15 +222,32 @@ def add_stock():
         user = AddUser.query.filter_by(name=user_name).first()
 
         if user:
-            # Add the stock symbol to the user's favorite stocks
-            user.add_stock(data.get('symbol'))  # Example stock data
-
-            # Commit the change to the database
+            user.add_stock(data.get('symbol')) 
             db.session.commit()
 
             # Update the session with the new favorite stocks list
             session['user']['favorite_stocks'] = json.loads(user.favorite_stocks)
+            return jsonify({'favorites': session['user']['favorite_stocks']})
 
+    return jsonify({'error': 'User not logged in or session expired'}), 403
+
+
+@app.route('/remove_stock', methods=['POST'])
+def remove_stock():
+    data = request.get_json()
+
+    if g.current_user:
+        user_name = g.current_user['name']
+
+        # Query the database for the logged-in user
+        user = AddUser.query.filter_by(name=user_name).first()
+
+        if user:
+            user.remove_stock(data.get('symbol'))  
+            db.session.commit()
+
+            # Update the session with the new favorite stocks list
+            session['user']['favorite_stocks'] = json.loads(user.favorite_stocks)
             return jsonify({'favorites': session['user']['favorite_stocks']})
 
     return jsonify({'error': 'User not logged in or session expired'}), 403

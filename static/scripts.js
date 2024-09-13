@@ -114,9 +114,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (data.error) {
                         alert(data.error);
                     } else {
-                        alert(data.message);
                         // Reload the page to show the updated list
-                        // window.location.reload();
+                        window.location.reload();
                     }
                 })
                 .catch(err => {
@@ -130,75 +129,112 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    let cryptoContainer = document.querySelector('.crypto-container');
-    const cryptos = [
-        { name: 'Bitcoin', id: 'btc-bitcoin' },
-        { name: 'Ethereum', id: 'eth-ethereum' },
-        { name: 'Ripple', id: 'xrp-xrp' },
-        { name: 'Polkadot', id: 'dot-polkadot' },
-        { name: 'Chainlink', id: 'link-chainlink' },
-        { name: 'Uniswap', id: 'uni-uniswap' },
-        { name: 'Binance Coin', id: 'bnb-binance-coin' },
-        { name: 'DOGE/ETH', id: 'doge-dogecoin' },
-    ];
+    function handleRemoveStock(e) {
+        // Find the stock card container
+        const stockCard = e.target.closest('.stock-card');
+        
+        if (stockCard) {
+            // Get the stock symbol from a data attribute
+            const symbol = stockCard.getAttribute('data-symbol');
+            fetch('/remove_stock', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token() }}'  // Include CSRF token if needed
+                },
+                body: JSON.stringify({ symbol: symbol })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.favorites) {
+                    stockCard.remove(); 
+                } else {
+                    console.error('Error removing stock:', data.error);
+                }
+            })
+        }
+    }
 
-    const fetchCryptoData = (crypto) => {
-        const apiUrl = `https://api.coinpaprika.com/v1/tickers/${crypto.id}`;
-        const stockUrl = `/search_stock?query=${crypto.name}`;
+    // Attach event listeners to all remove-stock buttons
+    document.querySelectorAll('.remove-stock').forEach(button => {
+        button.addEventListener('click', handleRemoveStock);
+    });
 
-        // Parallel fetches for price and stock data
-        return Promise.all([
-            fetch(apiUrl).then(response => response.json()),
-            fetch(stockUrl).then(response => response.json())
-        ]);
-    };
 
-    const promises = cryptos.map(crypto => fetchCryptoData(crypto));
 
-    // Wait for all promises to resolve
-    Promise.all(promises)
-        .then(results => {
-            results.forEach(([cryptoData, stockData]) => {
-                const price = cryptoData.quotes.USD.price.toFixed(2);
-                const change = cryptoData.quotes.USD.percent_change_24h.toFixed(2);
-                const stock = stockData[0];
+    // let cryptoContainer = document.querySelector('.crypto-container');
+    // const cryptos = [
+    //     { name: 'Bitcoin', id: 'btc-bitcoin' },
+    //     { name: 'Ethereum', id: 'eth-ethereum' },
+    //     { name: 'Ripple', id: 'xrp-xrp' },
+    //     { name: 'Polkadot', id: 'dot-polkadot' },
+    //     { name: 'Chainlink', id: 'link-chainlink' },
+    //     { name: 'Uniswap', id: 'uni-uniswap' },
+    //     { name: 'Binance Coin', id: 'bnb-binance-coin' },
+    //     { name: 'DOGE/ETH', id: 'doge-dogecoin' },
+    // ];
 
-                // Dynamically update the UI with the fetched data
-                cryptoContainer.innerHTML += `
-                    <div class="crypto-card">
-                        <h3 class="crypto-title">${stock.name}</h3>
-                        <div class="price">$${price}</div>
-                        <div class="change">${change}%</div>
-                    </div>
-                `;
-            });
-        })
-        .catch(err => {
-            console.error('Error fetching data:', err);
-        });
+    // const fetchCryptoData = (crypto) => {
+    //     const apiUrl = `https://api.coinpaprika.com/v1/tickers/${crypto.id}`;
+    //     const stockUrl = `/search_stock?query=${crypto.name}`;
+
+    //     // Parallel fetches for price and stock data
+    //     return Promise.all([
+    //         fetch(apiUrl).then(response => response.json()),
+    //         fetch(stockUrl).then(response => response.json())
+    //     ]);
+    // };
+
+    // const promises = cryptos.map(crypto => fetchCryptoData(crypto));
+
+    // // Wait for all promises to resolve
+    // Promise.all(promises)
+    //     .then(results => {
+    //         results.forEach(([cryptoData, stockData]) => {
+    //             const price = cryptoData.quotes.USD.price.toFixed(2);
+    //             const change = cryptoData.quotes.USD.percent_change_24h.toFixed(2);
+    //             const stock = stockData[0];
+
+    //             // Dynamically update the UI with the fetched data
+    //             cryptoContainer.innerHTML += `
+    //                 <div class="crypto-card">
+    //                     <div class="crypto-name">
+    //                         ${ stock.name }
+    //                     </div>
+    //                     <div class="crypto-stats">
+    //                         <div class="price">$${ price }</div>
+    //                         <div class="change positive">${ change }%</div> <!-- Use 'negative' class for negative change -->
+    //                     </div>
+    //                 </div>
+    //             `;
+    //         });
+    //     })
+    //     .catch(err => {
+    //         console.error('Error fetching data:', err);
+    //     });
 
     
-    let newsContainer = document.querySelector('.news-container');
-    fetch('http://127.0.0.1:5000/news', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        for (let i = 0; i < data.length; i++){
-            const news = data[i];
-            newsContainer.innerHTML += `
-                <div class="news-card">
-                    <h3 class="news-title">${news.title}</h3>
-                    <div class="news-source">${news.source}</div>
-                    <div> ${news.stock_name} </div>
-                    <a href="${news.url}" class="news-link">Read More</a>
-                </div>`;
-        }
-    });
+    // let newsContainer = document.querySelector('.news-container');
+    // fetch('http://127.0.0.1:5000/news', {
+    //     method: 'GET',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     }
+    // })
+    // .then(response => response.json())
+    // .then(data => {
+    //     console.log(data);
+    //     for (let i = 0; i < data.length; i++){
+    //         const news = data[i];
+    //         newsContainer.innerHTML += `
+    //             <div class="news-card">
+    //                 <h3 class="news-title">${news.title}</h3>
+    //                 <div class="news-source">${news.source}</div>
+    //                 <div> ${news.stock_name} </div>
+    //                 <a href="${news.url}" class="news-link">Read More</a>
+    //             </div>`;
+    //     }
+    // });
 
 
     // Add an event listener to the document to handle clicks

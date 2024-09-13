@@ -29,7 +29,6 @@
         <!-- Page Title -->
         <header>
             <h1>STOCK DASHBOARD</h1>
-             <p class="bio">Your personalized stock monitoring app. Track your favorite stocks and get the latest market insights.</p>
         </header>
 
 
@@ -66,7 +65,10 @@
             <div class="scrollable-container">
                 {% for stock in current_user.favorite_stocks %}
                     <div class="stock-card">
-                        <h3>{{ stock }}</h3>
+                        <div class="stock-top-row">
+                            <h3>{{ stock }}</h3>
+                            <button class="remove-stock"> X </button>
+                        </div>
                         <div class="price">$100.00</div>
                         <div class="change">+2%</div>
                     </div>

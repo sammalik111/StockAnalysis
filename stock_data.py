@@ -5,9 +5,23 @@ from prophet.plot import plot_plotly
 from datetime import date
 import pandas as pd
 import plotly.io as pio
+from yahoo_fin import stock_info
 
 START = "2020-01-01"
 TODAY = date.today().strftime("%Y-%m-%d")
+
+def get_stock_summary(symbol):
+    try:
+        # Fetch stock price and percentage change
+        price = stock_info.get_live_price(symbol)
+        historical_data = stock_info.get_data(symbol, period="1d", interval="1m")
+        last_close = historical_data['close'].iloc[-2]
+        change = (price - last_close) / last_close * 100
+        
+        return price, f"{change:.2f}%"
+    except Exception as e:
+        return 'N/A', 'N/A'
+
 
 def load_data(ticker):
     data = yf.download(ticker, START, TODAY)
@@ -15,8 +29,23 @@ def load_data(ticker):
     return data
 
 def generate_body_content(stock_symbol, stock_data, forecast_html):
+    # Fetch the latest price and change
+    price, change = get_stock_summary(stock_symbol)
+                    
     # Create the body content HTML
     body_html = f"""
+    <section class="stock-summary">
+        <div class="stock-info">
+            <h1 class="stock-name">
+                {stock_symbol}
+            </h1>
+            <div class="stock-price">
+                <span class="price">${price}</span>
+                <span class="change {'negative' if change.startswith('-') else ''}">{change}</span>
+            </div>
+        </div>
+    </section>
+
     <section>
         <h2>Stock Data for {stock_symbol}</h2>
         <div class="table-container">
@@ -52,6 +81,7 @@ def generate_body_content(stock_symbol, stock_data, forecast_html):
     </section>
     """
     return body_html
+
 
 def add_class_to_html(html_content, class_name):
     # This assumes the main content you want to modify is inside a <div> tag

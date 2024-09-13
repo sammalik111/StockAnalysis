@@ -64,3 +64,49 @@ tr:hover {
 p {
     padding-left: 50px;
 }
+
+
+
+
+
+.stock-summary {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(20, 34, 46, 0.9); /* Match container background */
+    border-radius: 10px;
+    color: #00d4ff; /* Aqua color for title */
+    display: flex;
+    justify-content: space-between; /* Distribute space between title and price */
+    align-items: center;
+}
+
+.stock-info {
+    display: flex;
+    justify-content: space-between; /* Space between title and price/change */
+    width: 100%; /* Ensure it takes the full width of the container */
+}
+
+.stock-name {
+    font-size: 50px; /* Large font size for stock name */
+    margin-right: auto; /* Push the price/change to the right */
+}
+
+.stock-price {
+    font-size: 24px; /* Font size for price and change */
+    text-align: right; /* Right-align the price and change */
+}
+
+.stock-price .price {
+    font-size: 36px; /* Large font size for price */
+    display: block; /* Ensure each item is on a new line */
+    margin-bottom: 5px;
+}
+
+.stock-price .change {
+    font-size: 18px; /* Font size for change */
+    color: #00d4ff; /* Default color for positive change */
+}
+
+.stock-price .change.negative {
+    color: red; /* Color for negative change */
+}
