@@ -119,7 +119,9 @@ h1, h2 {
 
 .search-list li:hover, .crypto-card:hover {
     background: rgba(14, 26, 38, 0.9); /* Slightly brighter on hover */
+    color: #007bff;
     transform: translateY(-2px);
+    transition: all 0.3s ease;
 }
 
 input[type="text"], input[type="password"], input[type="email"] {

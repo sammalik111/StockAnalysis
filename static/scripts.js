@@ -129,39 +129,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    function handleRemoveStock(e) {
-        // Find the stock card container
-        const stockCard = e.target.closest('.stock-card');
-        
-        if (stockCard) {
-            // Get the stock symbol from a data attribute
-            const symbol = stockCard.getAttribute('data-symbol');
-            fetch('/remove_stock', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token() }}'  // Include CSRF token if needed
-                },
-                body: JSON.stringify({ symbol: symbol })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.favorites) {
-                    stockCard.remove(); 
-                } else {
-                    console.error('Error removing stock:', data.error);
-                }
-            })
-        }
-    }
-
-    // Attach event listeners to all remove-stock buttons
-    document.querySelectorAll('.remove-stock').forEach(button => {
-        button.addEventListener('click', handleRemoveStock);
-    });
-
-
-
     let cryptoContainer = document.querySelector('.crypto-container');
     const cryptos = [
         { name: 'Bitcoin', id: 'btc-bitcoin' },
@@ -242,17 +209,47 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Use event delegation
     document.addEventListener('click', function (e) {
-        // Handle clicks on stock cards
-        if (e.target.closest('.stock-card')) {
+
+        // Ensure this part is handled by the remove button
+        if (e.target.classList.contains('remove-stock')) {
+            const stockCard = e.target.closest('.stock-card');
+            const symbol = stockCard.querySelector('h3').innerText;
+
+            if (symbol) {
+                fetch('/remove_stock', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ symbol: symbol })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.favorites) {
+                        // Update the UI accordingly
+                        stockCard.remove(); // Remove the stock card from the DOM
+                    } else {
+                        console.error('Error removing stock');
+                    }
+                });
+            }
+        }
+
+
+        // Check if the click target is a stock card
+        if (e.target.closest('.stock-card') && !e.target.classList.contains('remove-stock')) {
             const stockCard = e.target.closest('.stock-card');
             const symbol = stockCard.querySelector('h3').innerText; // Adjust selector based on actual HTML structure
+            const price = parseFloat(stockCard.querySelector('.price').innerText.replace('$', ''));
+            const change = parseFloat(stockCard.querySelector('.change').innerText.replace('%', ''));
             if (symbol) {
                 // Redirect to the stock page with the symbol as a query parameter
-                window.location.href = `/stock?query=${encodeURIComponent(symbol)}`;
+                window.location.href = `/stock?symbol=${encodeURIComponent(symbol)}&price=${encodeURIComponent(price)}&change=${encodeURIComponent(change)}`;
             } else {
                 console.error('Stock symbol not found.');
             }
         }
+        
 
         // Handle checkbox changes
         if (e.target.matches('.rising')) {
@@ -291,6 +288,44 @@ document.addEventListener('DOMContentLoaded', function () {
             element.classList.add('positive');
         }
     });
+
+
+
+    const stockCards = document.querySelectorAll('.stock-card');
+
+    // Function to update stock data
+    function updateStockData() {
+        stockCards.forEach(card => {
+            const symbol = card.querySelector('h3').innerText;
+            fetch(`/get_stock_data?symbol=${encodeURIComponent(symbol)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.price !== undefined && data.change !== undefined) {
+                        card.querySelector('.price').innerText = `$${data.price.toFixed(2)}`;
+                        card.querySelector('.change').innerText = `${data.change.toFixed(2)}%`;
+                        // add classes based on the change percentage
+                        const changeElement = card.querySelector('.change');
+                        changeElement.classList.remove('positive', 'negative'); // Reset classes
+                        if (data.change < 0) {
+                            changeElement.classList.add('negative');
+                        } else {
+                            changeElement.classList.add('positive');
+                        }
+
+
+                    } else {
+                        console.error('Failed to fetch stock data:', data);
+                    }
+                })
+                .catch(error => console.error('Error fetching stock data:', error));
+        });
+    }
+
+    // Update stock data every 10 seconds
+    setInterval(updateStockData, 10000);
+
+    // Initial update when the page loads
+    updateStockData();
 
     
 

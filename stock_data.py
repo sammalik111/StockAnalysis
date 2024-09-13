@@ -10,30 +10,14 @@ from yahoo_fin import stock_info
 START = "2020-01-01"
 TODAY = date.today().strftime("%Y-%m-%d")
 
-def get_stock_summary(symbol):
-    try:
-        # Fetch stock price and percentage change
-        price = stock_info.get_live_price(symbol)
-        print("this is price: ",price)
-        historical_data = stock_info.get_data(symbol, period="1d", interval="1m")
-        last_close = historical_data['close'].iloc[-2]
-        change = (price - last_close) / last_close * 100
-        print("this is change: ",change)
-        
-        return price, f"{change:.2f}%"
-    except Exception as e:
-        return 'N/A', 'N/A'
-
 
 def load_data(ticker):
     data = yf.download(ticker, START, TODAY)
     data.reset_index(inplace=True)
     return data
 
-def generate_body_content(stock_symbol, stock_data, forecast_html):
-    # Fetch the latest price and change
-    price, change = get_stock_summary(stock_symbol)
-                    
+def generate_body_content(stock_symbol, stock_data, forecast_html, price, change):
+
     # Create the body content HTML
     body_html = f"""
     <section class="stock-summary">
@@ -43,7 +27,7 @@ def generate_body_content(stock_symbol, stock_data, forecast_html):
             </h1>
             <div class="stock-price">
                 <span class="price">${price}</span>
-                <span class="change">{change}</span>
+                <span class="change">{change}%</span>
             </div>
         </div>
     </section>
@@ -97,7 +81,7 @@ def add_class_to_html(html_content, class_name):
 
 
 
-def stock_data(symbol):
+def stock_data(symbol, price, change):
     data = load_data(symbol)
 
     # Prepare the stock data table
@@ -120,7 +104,7 @@ def stock_data(symbol):
     forecast_html = add_class_to_html(forecast_html, 'forecast-chart')
 
     # Generate the body content HTML
-    body_content = generate_body_content(symbol, data, forecast_html)
+    body_content = generate_body_content(symbol, data, forecast_html, price, change)
 
     # Render the 'stock.html' template with the injected body content
     return render_template('stock.html', body_content=body_content)

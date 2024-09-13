@@ -7,8 +7,7 @@ import yfinance as yf
 from db import db  # Import db from db.py
 import json
 from news import get_news  # Import the get_news function
-from stock_data import stock_data
-
+from stock_data import stock_data  # Import the stock_data function
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Change this in production
@@ -173,6 +172,44 @@ def register():
     return render_template('register.html')
 
 
+@app.route('/get_stock_data', methods=['GET'])
+def get_stock_data():
+    symbol = request.args.get('symbol')
+    if not symbol:
+        return jsonify({'error': 'No symbol provided'}), 400
+
+    try:
+        # Fetch stock data using Finnhub
+        url = f'https://finnhub.io/api/v1/quote'
+        params = {
+            'symbol': symbol,
+            'token': FINNHUB_API_KEY
+        }
+        response = requests.get(url, params=params)
+        data = response.json()
+
+        if 'error' in data:
+            return jsonify({'error': data['error']}), 404
+
+        # Extract price and change
+        price = data.get('c', 'N/A')  # Current price
+        open_price = data.get('o', 'N/A')  # Opening price
+        high_price = data.get('h', 'N/A')  # High price
+        low_price = data.get('l', 'N/A')  # Low price
+
+        # Calculate the change percentage
+        if open_price and open_price != 'N/A':
+            change_percentage = ((price - open_price) / open_price) * 100
+        else:
+            change_percentage = 'N/A'
+
+        # Return the data as JSON
+        return jsonify({'price': price, 'change': change_percentage})
+    except Exception as e:
+        # Handle errors (e.g., invalid symbol, API issues)
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/search_stock', methods=['GET'])
 def search_stock():
     query = request.args.get('query', '').lower()
@@ -235,6 +272,7 @@ def add_stock():
 @app.route('/remove_stock', methods=['POST'])
 def remove_stock():
     data = request.get_json()
+    symbol = data.get('symbol')
 
     if g.current_user:
         user_name = g.current_user['name']
@@ -243,12 +281,13 @@ def remove_stock():
         user = AddUser.query.filter_by(name=user_name).first()
 
         if user:
-            user.remove_stock(data.get('symbol'))  
+            user.remove_stock(symbol)  # Ensure this method updates the favorite_stocks list
             db.session.commit()
 
             # Update the session with the new favorite stocks list
-            session['user']['favorite_stocks'] = json.loads(user.favorite_stocks)
-            return jsonify({'favorites': session['user']['favorite_stocks']})
+            g.current_user['favorite_stocks'] = json.loads(user.favorite_stocks)
+            session['user']['favorite_stocks'] = g.current_user['favorite_stocks']
+            return jsonify({'favorites': g.current_user['favorite_stocks']})
 
     return jsonify({'error': 'User not logged in or session expired'}), 403
 
@@ -262,8 +301,13 @@ def logout():
 
 @app.route('/stock', methods=['GET'])
 def stock_page():
-    symbol = request.args.get('query', 'AAPL')  # Default to 'AAPL' if no query param
-    this_data = stock_data(symbol)
+    # Get the stock symbol, price and change from the query parameters
+    symbol = request.args.get('symbol')
+    price = request.args.get('price')
+    change = request.args.get('change')
+    
+    # take price and change from the index.html page of the 
+    this_data = stock_data(symbol, price, change)
     return this_data 
     
     
