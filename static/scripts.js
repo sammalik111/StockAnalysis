@@ -206,6 +206,32 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    // Fetch recommendations
+    fetch('/recommendations', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        for (let i = 0; i < data.length; i++){
+            // Assuming data[i] contains the recommendation details
+            const recommendation = data[i];
+            const recommendationContainer = document.querySelector('.recommendation-container');
+            recommendationContainer.innerHTML += `
+                <div class="stock-card">
+                    <div class="stock-top-row">
+                        <h3> ${ recommendation }</h3>
+                        <button class="add-stock"> + </button>
+                    </div>
+                    <div class="price">$N/A</div>
+                    <div class="change">N/A%</div>
+                </div>
+            `;
+        }
+    });
     
     // Use event delegation
     document.addEventListener('click', function (e) {
@@ -228,6 +254,32 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (data.favorites) {
                         // Update the UI accordingly
                         stockCard.remove(); // Remove the stock card from the DOM
+                    } else {
+                        console.error('Error removing stock');
+                    }
+                });
+            }
+        }
+
+        // Ensure this part is handled by the remove button
+        if (e.target.classList.contains('add-stock')) {
+            const stockCard = e.target.closest('.stock-card');
+            const symbol = stockCard.querySelector('h3').innerText;
+
+            if (symbol) {
+                fetch('/add_stock', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ symbol: symbol })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.favorites) {
+                        // Update the UI accordingly
+                        stockCard.remove(); // Remove the stock card from the DOM
+                        window.location.reload(); // Reload the page to show the updated list
                     } else {
                         console.error('Error removing stock');
                     }
@@ -289,12 +341,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    
 
-
-    const stockCards = document.querySelectorAll('.stock-card');
-
+    
     // Function to update stock data
     function updateStockData() {
+        const stockCards = document.querySelectorAll('.stock-card');
         stockCards.forEach(card => {
             const symbol = card.querySelector('h3').innerText;
             fetch(`/get_stock_data?symbol=${encodeURIComponent(symbol)}`)
@@ -321,8 +373,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Update stock data every 10 seconds
-    setInterval(updateStockData, 10000);
+    // Wait 1 second after page load before setting up stockCards
+    setTimeout(() => {
+        console.log('Waiting 1 second before setting up stock cards.');
+        // Update stock data every minute
+        setInterval(updateStockData, 60000);
+        updateStockData();
+    }, 3000); 
 
     // Initial update when the page loads
     updateStockData();

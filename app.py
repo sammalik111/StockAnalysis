@@ -8,6 +8,7 @@ from db import db  # Import db from db.py
 import json
 from news import get_news  # Import the get_news function
 from stock_data import stock_data  # Import the stock_data function
+import pandas as pd
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Change this in production
@@ -290,6 +291,24 @@ def remove_stock():
             return jsonify({'favorites': g.current_user['favorite_stocks']})
 
     return jsonify({'error': 'User not logged in or session expired'}), 403
+
+
+@app.route('/recommendations', methods=['GET'])
+def recommendations():
+    try:
+        # get the top 100 stock tickers from the S&P 500
+        url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
+        df = pd.read_html(url)[0]
+        tickers = df['Symbol'].tolist()
+        tickers = tickers[:5]  # Limit to top 100 for recommendations
+        
+        return jsonify(tickers)
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+    return jsonify({'error': 'No recommendations available'}), 404
+
 
 
 # Route to log out and end session
