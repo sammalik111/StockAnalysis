@@ -1,16 +1,24 @@
-import os
-import requests
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify, g
-from datetime import timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import timedelta
 import yfinance as yf
-from db import db  # Import db from db.py
-import json
-from news import get_news  # Import the get_news function
-from stock_data import stock_data  # Import the stock_data function
 import pandas as pd
+import requests
+import json
+import os
 
-app = Flask(__name__)
+
+# Import helper files from resources
+from resources.helperFiles.news import get_news
+from resources.helperFiles.db import db
+from resources.helperFiles.stock_data import stock_data
+
+app = Flask(
+    __name__,
+    static_folder='static',  # Static files folder
+    template_folder='templates'  # Templates folder
+)
+
 app.secret_key = 'your_secret_key'  # Change this in production
 FINNHUB_API_KEY = 'crf5su9r01qk4jsb316gcrf5su9r01qk4jsb3170'  # Your Finnhub API Key
 
@@ -30,7 +38,7 @@ db.init_app(app)
 
 # Import models after db initialization to avoid circular imports
 with app.app_context():
-    from user import AddUser  # Import AddUser after initializing db
+    from resources.helperFiles.user import AddUser  # Import AddUser after initializing db
 
 
 # Load user before every request and make it globally available
@@ -59,6 +67,7 @@ def load_user():
             # Store user info in Flask's `g` object
             g.current_user = {
                 'name': user.name,
+                'email': user.email,
                 'favorite_stocks': favorite_stocks,
                 'preferences': preferences,
             }
@@ -80,7 +89,13 @@ def home():
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    return render_template('profile.html')
+    if g.current_user:
+        username = g.current_user['name']
+        email = g.current_user.get('email', 'user@example.com')
+        return render_template('profile.html', username=username, email=email)
+    else:
+        flash('Please log in first.', 'danger')
+        return redirect(url_for('login'))
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -122,18 +137,22 @@ def login():
         # Query the database to find the user
         user = AddUser.query.filter_by(name=username).first()
 
-        if user and check_password_hash(user.password, password):
-            session.permanent = True  # Set session lifetime
+        if user:
+            # Print the stored hash for debugging purposes
+            print(f"Stored password hash: {user.password}")
 
-            # Store user information in the session
-            session['user'] = {
-                'name': user.name,
-            }
+            # Check if the password matches the stored hash
+            if check_password_hash(user.password, password):
+                session.permanent = True  # Set session lifetime
+                session['user'] = {'name': user.name}
 
-            flash('Login successful!', 'success')
-            return redirect(url_for('home'))
+                flash('Login successful!', 'success')
+                return redirect(url_for('home'))
+            else:
+                flash('Invalid password', 'danger')
         else:
-            flash('Invalid username or password', 'danger')
+            flash('Invalid username', 'danger')
+
     return render_template('login.html')
 
 
@@ -142,6 +161,7 @@ def login():
 def register():
     if request.method == 'POST':
         username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
 
@@ -155,9 +175,15 @@ def register():
         if existing_user:
             flash('Username already exists', 'danger')
             return redirect(url_for('register'))
+        
+        # Check if email already exists
+        existing_email = AddUser.query.filter_by(email=email).first()
+        if existing_email:
+            flash('Email already exists', 'danger')
+            return redirect(url_for('register'))
 
         # Create a new user and save to the database
-        new_user = AddUser(username, generate_password_hash(password))
+        new_user = AddUser(username, email, password)  # Password will be hashed in the constructor
         db.session.add(new_user)
         db.session.commit()
 
@@ -302,6 +328,57 @@ def recommendations():
         return jsonify({'error': str(e)}), 500
 
     return jsonify({'error': 'No recommendations available'}), 404
+
+@app.route('/update-profile', methods=['POST'])
+def update_profile():
+    if g.current_user:
+        user_name = g.current_user['name']
+        user = AddUser.query.filter_by(name=user_name).first()
+
+        if user:
+            # Retrieve form data
+            changes = request.form
+
+            # Check if the new username or email is already taken by another user
+            new_username = changes.get('username', user.name)
+            new_email = changes.get('email', user.email)
+            existing_user = AddUser.query.filter(
+                (AddUser.name == new_username) | (AddUser.email == new_email)
+            ).filter(AddUser.id != user.id).first()
+
+            if existing_user:
+                return jsonify({'error': 'Username or email already exists'}), 400
+
+            # Update user details in the database
+            user.name = new_username
+            user.email = new_email
+
+            # Check if the old password matches before allowing password change
+            old_password = changes.get('oldpassword')
+            new_password = changes.get('password')
+
+            if old_password and new_password:
+                if check_password_hash(user.password, old_password):
+                    user.password = generate_password_hash(new_password)
+                else:
+                    return jsonify({'error': 'Old password is incorrect'}), 400
+
+            # Commit the changes to the database
+            db.session.commit()
+
+            # Update the session with the new user data
+            session['user'] = {
+                'name': user.name,
+                'email': user.email
+            }
+
+            # Also update the `g.current_user` to reflect the changes
+            g.current_user['name'] = user.name
+            g.current_user['email'] = user.email
+
+            return jsonify({'success': 'Profile updated successfully'})
+
+    return jsonify({'error': 'User not logged in or session expired'}), 403
 
 
 

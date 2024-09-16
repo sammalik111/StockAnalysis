@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link id="theme-stylesheet" rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" id="theme-stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" id="theme-stylesheet">
 </head>
 <body>
 
     <div class="container">
         <h1>Login</h1>
         <form action="/login" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
+            <input id="user" type="text" name="username" placeholder="Username" required>
+            <input id="pass" type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
         <a href="/register">Don't have an account? Register here</a>

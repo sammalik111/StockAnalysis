@@ -7,7 +7,7 @@ import pandas as pd
 import plotly.io as pio
 from yahoo_fin import stock_info
 
-START = "2020-01-01"
+START = "2022-01-01"
 TODAY = date.today().strftime("%Y-%m-%d")
 
 

@@ -1,7 +1,6 @@
-from db import db
-import json
 from werkzeug.security import generate_password_hash
-
+from resources.helperFiles.db import db
+import json
 
 class AddUser(db.Model):
     __tablename__ = 'users'
@@ -10,10 +9,12 @@ class AddUser(db.Model):
     password = db.Column(db.String(200), nullable=False)
     favorite_stocks = db.Column(db.Text, nullable=True)  # Store as JSON string
     preferences = db.Column(db.Text, nullable=True)      # Store as JSON string
+    email = db.Column(db.String(120), nullable=False, unique=True)
 
-    def __init__(self, name, password, favorite_stocks=None, preferences=None):
+    def __init__(self, name, email, password, favorite_stocks=None, preferences=None):
         self.name = name
         self.password = generate_password_hash(password)
+        self.email = email
         # Ensure favorite_stocks and preferences are stored as JSON strings
         self.favorite_stocks = json.dumps(favorite_stocks or [])  # Default to empty list
         self.preferences = json.dumps(preferences or {

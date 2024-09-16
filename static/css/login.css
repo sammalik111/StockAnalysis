@@ -1,0 +1,7 @@
+.container {
+    margin-left: 17.5%;
+}
+
+input {
+    width : calc(100% - 20px) !important;
+}

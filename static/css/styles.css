@@ -35,39 +35,6 @@ button:hover {
 }
 
 
-/* Preferences Section */
-.preferences-list {
-    display: flex;
-    flex-direction: row;
-    gap: 20px; /* Space between items */
-    margin-top: 20px;
-    flex-wrap: wrap; /* Allow items to wrap to the next line if needed */
-}
-
-/* Individual Preference Item */
-.preferences-list label {
-    display: flex;
-    align-items: center;
-    background: rgba(55, 55, 55, 0.3);
-    border: 2px solid #222;
-    border-radius: 10px;
-    padding: 10px 15px;
-    color: #c4d7e0;
-    font-size: 16px;
-    font-weight: 500;
-    transition: background 0.3s ease, color 0.3s ease;
-}
-
-.preferences-list label:hover {
-    background: rgba(0, 212, 255, 0.3); /* Light aqua on hover */
-    color: #007bff; /* Bright aqua text on hover */
-}
-
-/* Checkbox Styling */
-.preferences-list input[type="checkbox"] {
-    accent-color: #007bff; /* Highlight color for checked state */
-    margin-right: 8px; /* Space between checkbox and label text */
-}
 
 
 .section-title{
@@ -157,6 +124,10 @@ h1, h2 {
     text-align: left;
 }
 
+.search-input{
+    width: calc(100% - 20px) !important;
+}
+
 /* Search and Crypto Card Section */
 .search-list li, .crypto-card {
     background: rgba(14, 26, 38, 0.8); /* Deep sea theme */
@@ -172,7 +143,7 @@ h1, h2 {
     align-items: center;
 }
 
-.search-list li:hover, .crypto-card:hover {
+.search-list li:hover, .crypto-card:hover, .stock-card:hover {
     background: rgba(14, 26, 38, 0.9); /* Slightly brighter on hover */
     color: #007bff;
     transform: translateY(-2px);
@@ -220,11 +191,7 @@ input:focus {
     width: 250px;
 }
 
-.stock-card:hover {
-    transform: scale(1.1); /* Slightly enlarge on hover */
-    transform: translateY(-5px); /* Lift effect on hover */
-    transition: transform 0.3s ease;
-} 
+
 
 .stock-card h3 {
     font-size: 20px;
@@ -234,7 +201,7 @@ input:focus {
 }
 
 .remove-stock, .add-stock {
-    background: rgba(70, 65, 65, 0.2); /* Red background */
+    background: rgba(0, 120, 255, 0.05); /* Red background */
     border: none;
     color: white; 
     font-size: 20px; 
@@ -251,7 +218,7 @@ input:focus {
 }
 
 .remove-stock:hover, .add-stock:hover {
-    background-color:  rgba(101, 42, 42, 0.8); /* Red background */
+    background-color:  rgba(0, 120, 255, 0.2); /* Red background */
     transform: scale(1.1); 
 }
 
@@ -453,6 +420,7 @@ input:focus {
     transition: color 0.3s ease;
     width: auto;
     height: auto;
+    margin : 20px 0px;
 }
 
 .toggle-sidebar-btn:hover {
@@ -493,9 +461,3 @@ input.rising:checked {
 
 
 
-
-
-
-
-
- 

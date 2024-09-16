@@ -1,0 +1,175 @@
+/* Main Title */
+.main-title {
+    font-size: 36px;
+    color: #c4d7e0;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-align: left;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Section Subtitle */
+.section-subtitle {
+    font-size: 26px;
+    color: #007bff;
+    margin-bottom: 25px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(0, 123, 255, 0.3);
+    padding-bottom: 12px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+/* User Info Container */
+.user-info-container {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(20, 34, 46, 0.7);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+
+/* User Info */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #c4d7e0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.user-info i {
+    color: #007bff;
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.user-info p {
+    margin: 0;
+    font-size: 16px;
+}
+
+/* Update Profile Section */
+.update-profile-section {
+    background: rgba(20, 34, 46, 0.8);
+    padding: 25px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+/* Form Inputs */
+input[type="text"], input[type="email"], input[type="password"], button {
+    width: calc(100% - 32px); /* Adjust for padding */
+    padding: 14px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background: rgba(55, 55, 55, 0.2);
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+button{
+    width: calc(100%);
+}
+
+input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
+}
+
+button {
+    background: rgba(0, 123, 255, 0.2);
+    border: none;
+    color: #007bff;
+    font-size: 16px;
+    padding: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: rgba(0, 123, 255, 0.4);
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+}
+
+/* Preferences Section */
+.preferences-list {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.preferences-list label {
+    background: rgba(55, 55, 55, 0.3);
+    padding: 10px 15px;
+    border-radius: 8px;
+    color: #c4d7e0;
+    font-size: 16px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.preferences-list label:hover {
+    background: rgba(0, 123, 255, 0.2);
+    color: #007bff;
+    border: 1px solid #007bff;
+}
+
+.preferences-list input[type="checkbox"] {
+    accent-color: #007bff;
+    margin-right: 10px;
+}
+
+/* Sidebar and Toggle Button */
+.toggle-sidebar-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: transparent;
+    border: none;
+    color: #c4d7e0;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1001;
+    transition: color 0.3s ease;
+}
+
+.toggle-sidebar-btn:hover {
+    color: #007bff;
+}
+
+
+/* Toggle Sidebar Button */
+.toggle-sidebar-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: transparent;
+    border: none;
+    color: #c4d7e0;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1001;
+    transition: color 0.3s ease;
+    width: auto;
+    height: auto;
+    padding: 1px 6px;
+}
+
+.toggle-sidebar-btn:hover {
+    color: #00d4ff;
+    border: none;
+}

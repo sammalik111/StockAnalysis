@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeAddStock();
     initializeRemoveStock();
     initializeRisingStockFilter();
+
+    // Initialize opening and closing of stock cards
+    initializeStockCardToggle();
 });
 
 // Helper Functions:
@@ -119,12 +122,14 @@ function fetchNews() {
             const newsContainer = document.querySelector('.news-container');
             newsContainer.innerHTML = '';
             data.forEach(news => {
+                console.log(news.link);  // Ensure the URL is valid
+
                 newsContainer.innerHTML += `
                     <div class="news-card">
                         <h3 class="news-title">${news.title}</h3>
                         <div class="news-source">${news.source}</div>
                         <div>${news.stock_name}</div>
-                        <a href="${news.url}" class="news-link">Read More</a>
+                        <a href="${news.link}" class="news-link" target="_blank">Read More</a>
                     </div>`;
             });
         })
@@ -318,3 +323,28 @@ function setupStockCards() {
             .catch(error => console.error('Error fetching stock data:', error));
     });
 }
+
+
+function initializeStockCardToggle() {
+    document.addEventListener('click', function (e) {
+        // make sure the clicked element is a stock card and not a button
+        if (e.target.classList.contains('stock-card') && !e.target.classList.contains('add-stock') && !e.target.classList.contains('remove-stock')) {
+            const stockCard = e.target.closest('.stock-card');
+            // get the ticker, price, and change of the stock
+            const symbol = stockCard.querySelector('h3').innerText;
+            const price = parseFloat(stockCard.querySelector('.price').innerText.replace('$', ''));
+            const change = parseFloat(stockCard.querySelector('.change').innerText.replace('%', ''));
+
+            console.log("symbol %s price %s change %s", symbol, price, change);
+            if (symbol) {
+                // Redirect to the stock page with the symbol as a query parameter
+                window.location.href = `/stock?symbol=${encodeURIComponent(symbol)}&price=${encodeURIComponent(price)}&change=${encodeURIComponent(change)}`;
+            } else {
+                console.error('Stock symbol not found.');
+            }
+        }
+        
+    });
+}
+
+

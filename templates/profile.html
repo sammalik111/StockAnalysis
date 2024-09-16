@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Monitoring App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" id="theme-stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}" id="theme-stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <!-- Hamburger button to toggle the sidebar -->
@@ -14,27 +18,50 @@
     <!-- Side navigation bar -->
     <div class="sidenav">
         <a href="/">Home</a>
-        <a href="profile">Profile</a>
-        <a href="upload">Upload CSV</a>
-        <a href="logout">Logout</a>
+        <a href="/profile">Profile</a>
+        <a href="/upload">Upload CSV</a>
+        <a href="/logout">Logout</a>
     </div>
 
     <!-- Main content container -->
     <div class="container">
         <!-- Profile Section -->
         <section id="profile-section">
-            <h1 class="section-title">User Profile</h1>
-            <div class="main-content">
-                <form action="/update-profile" method="POST">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" value="currentUsername" required>
+            <h1 class="main-title">User Profile</h1>
 
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="user@example.com" required>
+            <!-- Current Information Section -->
+            <div class="current-info-section">
+                <h2 class="section-subtitle">Current Information</h2>
+                <div class="user-info-container">
+                    <div class="user-info">
+                        <i class="fas fa-user"></i>
+                        <p>{{ username }}</p>
+                    </div>
+                    <div class="user-info">
+                        <i class="fas fa-envelope"></i>
+                        <p>{{ email }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <br>
 
-                    <label for="password">Change Password:</label>
+            <!-- Update Profile Section -->
+            <div class="update-profile-section">
+                <h2 class="section-subtitle">Update Profile</h2>
+                <form id="profileForm">
+                    <label for="username">Change Username:</label>
+                    <input type="text" id="username" name="username" value="{{ username }}" required>
+                
+                    <label for="email">Change Email:</label>
+                    <input type="email" id="email" name="email" value="{{ email }}" required>
+                
+                    <label for="oldpassword">Old Password:</label>
+                    <input type="password" id="oldpassword" name="oldpassword" placeholder="Enter old password">
+                
+                    <label for="password">New Password:</label>
                     <input type="password" id="password" name="password" placeholder="Enter new password">
-
+                
                     <button type="submit">Update Profile</button>
                 </form>
             </div>
@@ -43,7 +70,7 @@
 
         <!-- Preferences Section -->
         <section id="preferences-section">
-            <h1 class="section-title">Stock Preferences</h1>
+            <h2 class="section-subtitle">Stock Preferences</h2>
             <div class="main-content">
                 <form action="/save-preferences" method="POST">
                     <div class="preferences-list">
