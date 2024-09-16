@@ -7,10 +7,66 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: row;
+    position: relative; /* Needed for the pseudo-element */
     transition: all 0.3s ease;
-    /* add a backdrop of a low opacity image wallpaper.jpg in this folder */
-    background-image: url('wallpaper.jpg') no-repeat center center fixed;
-    
+}
+
+/* ---------------------------- FORMATTING ------------------------------- */
+
+
+button {
+    border: 1px solid #007bff;
+    width: 200px;
+    height: 45px;
+    margin: 20px 0;
+    color: white;
+    background: rgba(70, 65, 65, 0.2);
+    border: none;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #007bff;
+    background: rgba(0,123,255,0.3);
+    border: 1px solid #007bff;
+    transition: all 0.3s ease;
+}
+
+
+/* Preferences Section */
+.preferences-list {
+    display: flex;
+    flex-direction: row;
+    gap: 20px; /* Space between items */
+    margin-top: 20px;
+    flex-wrap: wrap; /* Allow items to wrap to the next line if needed */
+}
+
+/* Individual Preference Item */
+.preferences-list label {
+    display: flex;
+    align-items: center;
+    background: rgba(55, 55, 55, 0.3);
+    border: 2px solid #222;
+    border-radius: 10px;
+    padding: 10px 15px;
+    color: #c4d7e0;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.preferences-list label:hover {
+    background: rgba(0, 212, 255, 0.3); /* Light aqua on hover */
+    color: #007bff; /* Bright aqua text on hover */
+}
+
+/* Checkbox Styling */
+.preferences-list input[type="checkbox"] {
+    accent-color: #007bff; /* Highlight color for checked state */
+    margin-right: 8px; /* Space between checkbox and label text */
 }
 
 
@@ -28,7 +84,7 @@ body {
     background: rgba(14, 26, 38, 0.7); /* Underwater dark tones */
     backdrop-filter: blur(20px); /* Enhanced frosted glass effect */
     color: #ffffff;
-    padding-top: 70px;
+    padding-top: 90px;
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -69,26 +125,25 @@ body {
     padding: 30px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     width: 65%;
-    margin-left: 20%;
+    margin-left: 25%;
     box-sizing: border-box;
     transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
 /* Expanded container when sidebar is hidden */
 .container.expanded {
-    margin-left: 15%;
+    margin-left: 17%;
 }
 
 /* Section Titles */
 .section-title {
-    border-bottom: 1px solid #555;
     padding-bottom: 8px;
     margin-bottom: 15px;
     color: #c4d7e0;
     font-size: 22px;
     font-weight: 600;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Deep shadow */
-    background: rgba(20, 34, 46, 0.9); /* Darker background */
+    background: rgba(20, 34, 46, 0.2); /* Darker background */
     border-radius: 8px;
     padding: 12px;
 }
@@ -190,6 +245,9 @@ input:focus {
     right: 10px;
     top: 10px;
     transition: background-color 0.3s ease, transform 0.3s ease; 
+    width : auto;
+    height: auto;
+    margin: auto;
 }
 
 .remove-stock:hover, .add-stock:hover {
@@ -393,10 +451,13 @@ input:focus {
     cursor: pointer;
     z-index: 1001;
     transition: color 0.3s ease;
+    width: auto;
+    height: auto;
 }
 
 .toggle-sidebar-btn:hover {
     color: #00d4ff;
+    border: none;
 }
 
 #toggle-mode-btn{
@@ -430,3 +491,11 @@ input.rising:checked {
     accent-color: #007bff; /* Highlight color for checked state */
 }
 
+
+
+
+
+
+
+
+ 

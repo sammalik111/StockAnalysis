@@ -82,12 +82,6 @@ def home():
 def profile():
     return render_template('profile.html')
 
-
-@app.route('/preferences', methods=['GET', 'POST'])
-def preferences():
-    return render_template('preferences.html')
-
-
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     return render_template('uploadcsv.html')

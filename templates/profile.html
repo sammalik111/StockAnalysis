@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Stock Monitoring App</title>
+    <title>Stock Monitoring App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </head>
@@ -15,28 +15,55 @@
     <div class="sidenav">
         <a href="/">Home</a>
         <a href="profile">Profile</a>
-        <a href="preferences">Preferences</a>
         <a href="upload">Upload CSV</a>
         <a href="logout">Logout</a>
     </div>
 
     <!-- Main content container -->
     <div class="container">
-        <h1 class="page-title">User Profile</h1>
-        <div class="main-content">
-            <form action="/update-profile" method="POST">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value="currentUsername" required>
+        <!-- Profile Section -->
+        <section id="profile-section">
+            <h1 class="section-title">User Profile</h1>
+            <div class="main-content">
+                <form action="/update-profile" method="POST">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="currentUsername" required>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="user@example.com" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="user@example.com" required>
 
-                <label for="password">Change Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter new password">
+                    <label for="password">Change Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter new password">
 
-                <button type="submit">Update Profile</button>
-            </form>
-        </div>
+                    <button type="submit">Update Profile</button>
+                </form>
+            </div>
+        </section>
+        <br>
+
+        <!-- Preferences Section -->
+        <section id="preferences-section">
+            <h1 class="section-title">Stock Preferences</h1>
+            <div class="main-content">
+                <form action="/save-preferences" method="POST">
+                    <div class="preferences-list">
+                        <label>
+                            <input type="checkbox" name="sector" value="finance" class="rising"> Finance
+                        </label>
+                        <label>
+                            <input type="checkbox" name="sector" value="health" class="rising"> Health
+                        </label>
+                        <label>
+                            <input type="checkbox" name="sector" value="technology" class="rising"> Technology
+                        </label>
+                        <label>
+                            <input type="checkbox" name="sector" value="energy" class="rising"> Energy
+                        </label>
+                    </div>
+                    <button type="submit" class="save-preferences-btn">Save Preferences</button>
+                </form>
+            </div>
+        </section>
     </div>
 </body>
 </html>
