@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function updateProfile() {
     document.getElementById('profileForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault(); // Prevent default form submission
 
         // Collect form data
         const formData = new FormData(this);

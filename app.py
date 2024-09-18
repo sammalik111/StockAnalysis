@@ -327,7 +327,6 @@ def recommendations():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-    return jsonify({'error': 'No recommendations available'}), 404
 
 @app.route('/update-profile', methods=['POST'])
 def update_profile():
@@ -336,11 +335,11 @@ def update_profile():
         user = AddUser.query.filter_by(name=user_name).first()
 
         if user:
-            # Retrieve form data
-            changes = request.form
+            # Retrieve JSON data
+            changes = request.json
 
             # Check if the new username or email is already taken by another user
-            new_username = changes.get('username', user.name)
+            new_username = changes.get('name', user.name)
             new_email = changes.get('email', user.email)
             existing_user = AddUser.query.filter(
                 (AddUser.name == new_username) | (AddUser.email == new_email)
@@ -354,8 +353,8 @@ def update_profile():
             user.email = new_email
 
             # Check if the old password matches before allowing password change
-            old_password = changes.get('oldpassword')
-            new_password = changes.get('password')
+            old_password = changes.get('old_password')
+            new_password = changes.get('new_password')
 
             if old_password and new_password:
                 if check_password_hash(user.password, old_password):
@@ -379,6 +378,7 @@ def update_profile():
             return jsonify({'success': 'Profile updated successfully'})
 
     return jsonify({'error': 'User not logged in or session expired'}), 403
+
 
 
 # route to update user preferences

@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeThemeToggle(); 
 
     // Defer fetching crypto data to the background
-    // setTimeout(fetchCryptoData, 0);  
+    setTimeout(fetchCryptoData, 0);  
 
     // Lazy load news and recommendations after full page load
-    // window.addEventListener('load', () => {
-    //     fetchNews(); 
-    //     fetchRecommendations();
-    // });
+    window.addEventListener('load', () => {
+        fetchNews(); 
+        fetchRecommendations();
+    });
 
     // Debounced search input handler
     const debouncedSearch = debounce(handleSearch, 300);
