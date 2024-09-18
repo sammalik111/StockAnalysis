@@ -91,6 +91,17 @@
                 </form>
             </div>
         </section>
+
+        <script type="text/javascript">
+            let userPreferences = {{ current_user.preferences | tojson }};
+            let sectors = userPreferences.sectors || [];
+            
+            document.querySelectorAll('.preferences-list input[type="checkbox"]').forEach(checkbox => {
+                if (sectors.includes(checkbox.value)) {
+                    checkbox.checked = true;
+                }
+            });
+        </script>
     </div>
 </body>
 </html>

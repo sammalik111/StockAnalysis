@@ -43,16 +43,13 @@
             <p>Theme: {{ current_user.preferences.theme }}</p>
             <p>Currency: {{ current_user.preferences.currency }}</p>
             <p>Language: {{ current_user.preferences.language }}</p>
-            <button id="toggle-mode-btn">Toggle Theme</button>
-        </div>
-
-        <div class="filter-container">
-            <label>
+            <label class="rising-stocks-label">
                 <input class="rising" type="checkbox" />
                 <span>Show only rising stocks</span>
             </label>
-            
+            <button id="toggle-mode-btn">Toggle Theme</button>
         </div>
+        
 
         <!-- Recommended Stocks -->
         <section>

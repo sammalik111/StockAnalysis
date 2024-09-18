@@ -92,7 +92,7 @@ def profile():
     if g.current_user:
         username = g.current_user['name']
         email = g.current_user.get('email', 'user@example.com')
-        return render_template('profile.html', username=username, email=email)
+        return render_template('profile.html', username=username, email=email, current_user=g.current_user)
     else:
         flash('Please log in first.', 'danger')
         return redirect(url_for('login'))
@@ -377,6 +377,30 @@ def update_profile():
             g.current_user['email'] = user.email
 
             return jsonify({'success': 'Profile updated successfully'})
+
+    return jsonify({'error': 'User not logged in or session expired'}), 403
+
+
+# route to update user preferences
+@app.route('/update-preferences', methods=['POST'])
+def update_preferences():
+    if g.current_user:
+        user_name = g.current_user['name']
+        user = AddUser.query.filter_by(name=user_name).first()
+
+        if user:
+            # Retrieve preferences from the request
+            sector_preferences = request.get_json()
+            # convert sector preferences to list 
+            sectors = sector_preferences.get('sectors', [])
+
+            # Update user preferences in the database
+            user.set_sectors(sectors)
+            db.session.commit()
+            
+            # Update the session with the new preferences
+            g.current_user['preferences'] = user.get_preferences()
+            return jsonify({'success': g.current_user['preferences']})
 
     return jsonify({'error': 'User not logged in or session expired'}), 403
 

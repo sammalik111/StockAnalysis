@@ -50,10 +50,35 @@ class AddUser(db.Model):
             self.favorite_stocks = json.dumps(stocks)
             db.session.commit()
 
+    def set_sectors(self, new_sectors):
+        try:
+            # Load current preferences
+            preferences = json.loads(self.preferences)
+            
+            # Get the existing sectors from preferences or create a new list
+            sectors = preferences.get('sectors', [])
+            
+            # Ensure sectors is a list
+            if not isinstance(sectors, list):
+                sectors = []
 
-    def set_preferences(self, new_preferences):
-        # Set new preferences and convert them to a JSON string
-        self.preferences = json.dumps(new_preferences)
+            # Loop through new sectors and add them if they don't already exist
+            for sector in new_sectors:
+                if sector not in sectors:
+                    sectors.append(sector)
+            
+            # Update the sectors in preferences
+            preferences['sectors'] = sectors
+            self.preferences = json.dumps(preferences)
+            
+            # Commit the changes to the database
+            db.session.commit()
+
+        except (json.JSONDecodeError, TypeError) as e:
+            print(f"Error updating sectors: {e}")
+
+
+
 
     def get_preferences(self):
         # Convert the stored JSON string back to a Python dictionary

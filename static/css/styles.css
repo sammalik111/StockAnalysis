@@ -380,25 +380,55 @@ input:focus {
 
 /* ---------------------- PREFERENCES INFORMATION ------------------------ */
 
-.preferences-list{
+/* Update preferences-list styling for better alignment */
+.preferences-list {
     display: flex;
     flex-direction: row;
     gap: 10px;
     margin-top: 20px;
+    align-items: center; /* Ensure alignment is consistent */
 }
- 
-.preferences-list p, .preferences-list button {
+
+.preferences-list p, 
+.preferences-list button, 
+.preferences-list .rising-stocks-label {
     border: #222 solid 2px;
     border-radius: 10px;
     padding: 10px;
     background: rgba(55, 55, 55, 0.3);
-
 }
 
-.preferences-list p:hover {
+.preferences-list p:hover,
+.preferences-list .rising-stocks-label:hover {
     color: #82e9de;
-    transition: color 0.3s ease; /* Move the transition before the color */
+    transition: color 0.3s ease;
 }
+
+/* Add style for the checkbox to match the rest */
+.rising-stocks-label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #f0f0f0;
+}
+
+input.rising {
+    accent-color: #333;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+input.rising:checked {
+    accent-color: #007bff; /* Highlight color when checked */
+}
+
+#toggle-mode-btn {
+    width: 130px;
+    height: 43px;
+    color: white;
+    margin-left: auto; /* Align toggle button to the right */
+}
+
 
 
 /* Down indicator for negative price changes */
@@ -461,3 +491,53 @@ input.rising:checked {
 
 
 
+
+
+
+
+
+
+/* Search list styling */
+.search-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.search-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(14, 26, 38, 0.8); /* Deep sea theme */
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #c4d7e0;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    
+}
+
+.search-item:hover {
+    background: rgba(14, 26, 38, 0.9); /* Slightly brighter on hover */
+    color: #007bff;
+}
+
+
+.add-stock {
+    background: rgba(0, 120, 255, 0.05);
+    border: none;
+    color: white;
+    font-size: 20px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-left: 10px; /* Space between content and button */
+}
+
+.add-stock:hover {
+    background-color: rgba(0, 120, 255, 0.2);
+    transform: scale(1.1);
+}

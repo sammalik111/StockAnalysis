@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeThemeToggle(); 
 
     // Defer fetching crypto data to the background
-    setTimeout(fetchCryptoData, 0);  
+    // setTimeout(fetchCryptoData, 0);  
 
     // Lazy load news and recommendations after full page load
-    window.addEventListener('load', () => {
-        fetchNews(); 
-        fetchRecommendations();
-    });
+    // window.addEventListener('load', () => {
+    //     fetchNews(); 
+    //     fetchRecommendations();
+    // });
 
     // Debounced search input handler
     const debouncedSearch = debounce(handleSearch, 300);
@@ -270,12 +270,12 @@ function handleSearch() {
                     for (let i = 0; i < data.length; i++) {
                         const stock = data[i];
                         const li = document.createElement('li');
+                        li.classList.add('search-item');  // Add a class for styling
 
                         // Ensure the structure is correct
                         li.innerHTML = `
-                            <strong>${stock.name} (${stock.symbol})</strong> - 
-                            ${stock.type} - Display Symbol: ${stock.displaySymbol} 
-                            <span class="add-stock">+</span>
+                            <strong>${stock.name} (${stock.symbol})</strong>
+                            <button class="add-stock">+</button>
                         `;
                         // Set data attributes on the parent <li> for easy access
                         li.dataset.symbol = stock.symbol;
@@ -327,10 +327,12 @@ function setupStockCards() {
 
 function initializeStockCardToggle() {
     document.addEventListener('click', function (e) {
-        // make sure the clicked element is a stock card and not a button
-        if (e.target.classList.contains('stock-card') && !e.target.classList.contains('add-stock') && !e.target.classList.contains('remove-stock')) {
-            const stockCard = e.target.closest('.stock-card');
-            // get the ticker, price, and change of the stock
+        // Check if the clicked element or its parent is a stock card
+        const stockCard = e.target.closest('.stock-card');
+        
+        // Ensure it's not a button inside the stock card (like add or remove buttons)
+        if (stockCard && !e.target.classList.contains('add-stock') && !e.target.classList.contains('remove-stock')) {
+            // Get the ticker, price, and change of the stock
             const symbol = stockCard.querySelector('h3').innerText;
             const price = parseFloat(stockCard.querySelector('.price').innerText.replace('$', ''));
             const change = parseFloat(stockCard.querySelector('.change').innerText.replace('%', ''));
@@ -343,8 +345,8 @@ function initializeStockCardToggle() {
                 console.error('Stock symbol not found.');
             }
         }
-        
     });
 }
+
 
 
