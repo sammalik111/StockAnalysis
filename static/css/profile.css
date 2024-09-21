@@ -1,3 +1,25 @@
+/* General body styling */
+body {
+    background: #0b0c0e;
+    color: #d1d5db;
+    font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+/* Main container */
+.container {
+    background-color: none;
+    border-radius: 10px;
+    padding: 40px;
+    margin: 80px auto;
+    width: 65%;
+}
+
 /* Main Title */
 .main-title {
     font-size: 32px;
@@ -18,7 +40,7 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Frosted Glass User Info Container */
+/* User Info Container */
 .user-info-container {
     display: flex;
     justify-content: space-between;
@@ -140,11 +162,21 @@ button:hover {
 }
 
 .toggle-sidebar-btn:hover {
-    color: #c4d7e0;
-    background: none;
-    box-shadow: none;
     color: #00d4ff;
-    background: #007bff;
-    background: rgba(0,123,255,0.3);
-    transition: all 0.3s ease;
+}
+
+/* Save Preferences Button */
+.save-preferences-btn {
+    background-color: #0b0c0e;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.5s border 0.5s ease;
+}
+
+.save-preferences-btn:hover {
+    border: 1px solid #0056b3;
 }

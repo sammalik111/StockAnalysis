@@ -11,25 +11,56 @@
 </head>
 <body>
 
-    <!-- Hamburger button to toggle the sidebar -->
-    <button class="toggle-sidebar-btn">☰</button>
+    
 
     <!-- Side navigation bar -->
     <div class="sidenav">
-        <a href="/">Home</a>
-        <a href="profile">Profile</a>
-        <a href="upload">Upload CSV</a>
-        <a href="logout">Logout</a>
+        <div class="scrollable-container">
+            <input class="search-my-stocks" type="text" placeholder="Search My Stocks..." id="stockSearch" />
+
+            <!-- Business News -->
+            <div class="business-news">
+                <h2>Business News</h2>
+                <div class="news-source">From Yahoo Finance</div>
+            </div>
+
+            <!-- Dynamic stock cards -->
+            <div id="stockList">
+                {% for stock in current_user.favorite_stocks %}
+                    <div class="stock-card my-stock">
+                        <div class="stock-details">
+                            <div class="stock-name"> {{ stock }} </div>
+                            <div class="stock-symbol">stock</div>
+                        </div>
+                        <div class="stock-stats">
+                            <div class="price"> $N/A </div>
+                            <div class="change positive"> N/A%</div>
+                        </div>
+                        <button class="remove-stock">X</button>
+                    </div>
+                {% else %}
+                    <div class="no-stocks">No favorite stocks added yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="navbar">
+        <!-- Hamburger button to toggle the sidebar -->
+        <button class="toggle-sidebar-btn">☰</button>
+        <h1>STOCK DASHBOARD</h1>
+
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="profile">Profile</a>
+            <a href="upload">Upload CSV</a>
+            <a href="logout">Logout</a>
+        </div>
     </div>
 
     <!-- Main content container -->
     <div class="container">
-        <!-- Page Title -->
-        <header>
-            <h1>STOCK DASHBOARD</h1>
-        </header>
-
-
         <!-- Search box and filters -->
         <div class="search-container">
             <input class="search-input" type="text" placeholder="Search stocks..." />
@@ -51,26 +82,6 @@
         </div>
         
 
-        <!-- Recommended Stocks -->
-        <section>
-            <div class="section-title modern-title">
-                <h2>MY STOCKS</h2>
-            </div>
-            <div class="scrollable-container">
-                {% for stock in current_user.favorite_stocks %}
-                    <div class="stock-card">
-                        <div class="stock-top-row">
-                            <h3>{{ stock }}</h3>
-                            <button class="remove-stock"> X </button>
-                        </div>
-                        <div class="price">$N/A</div>
-                        <div class="change">N/A%</div>
-                    </div>
-                {% else %}
-                    <div>No favorite stocks added yet.</div>
-                {% endfor %}
-            </div>
-        </section>
 
         <!-- My Stocks -->
         <section>

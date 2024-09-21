@@ -11,15 +11,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/day_mode.css') }}" id="day-mode-stylesheet" disabled>
 </head>
 <body>
-    <!-- Static content here -->
-    <button class="toggle-sidebar-btn">☰</button>
+    
+    <div class="navbar">
+        <!-- Hamburger button to toggle the sidebar -->
+        <button class="toggle-sidebar-btn">☰</button>
+        <h1>STOCK DASHBOARD</h1>
 
-    <!-- Side navigation bar -->
-    <div class="sidenav">
-        <a href="/">Home</a>
-        <a href="profile">Profile</a>
-        <a href="upload">Upload CSV</a>
-        <a href="logout">Logout</a>
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="profile">Profile</a>
+            <a href="upload">Upload CSV</a>
+            <a href="logout">Logout</a>
+        </div>
     </div>
 
     <!-- Main content container -->

@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize opening and closing of stock cards
     initializeStockCardToggle();
+
+    // Initialize filtering for my stocks
+    filterMyStock();
 });
 
 // Helper Functions:
@@ -46,8 +49,10 @@ function initializeSidebar() {
 
         if (sidenav.classList.contains('hidden')) {
             container.classList.add('expanded'); // Full width when sidebar is hidden
+            toggleSidebarBtn.classList.add('expanded'); // Change button state
         } else {
             container.classList.remove('expanded'); // Centered when sidebar is visible
+            toggleSidebarBtn.classList.remove('expanded'); // Reset button state
         }
     });
 }
@@ -126,11 +131,16 @@ function fetchNews() {
 
                 newsContainer.innerHTML += `
                     <div class="news-card">
+                        <div class="news-header">
+                            <div class="news-source">${news.source}</div>
+                        </div>
                         <h3 class="news-title">${news.title}</h3>
-                        <div class="news-source">${news.source}</div>
                         <div>${news.stock_name}</div>
-                        <a href="${news.link}" class="news-link" target="_blank">Read More</a>
-                    </div>`;
+                        <div class="news-footer">
+                            <a href="${news.link}" class="news-link" target="_blank">Read More</a>
+                        </div>
+                    </div>
+                    `;
             });
         })
         .catch(err => console.error('Error fetching news:', err));
@@ -146,13 +156,12 @@ function fetchRecommendations() {
             data.forEach(recommendation => {
                 recommendationContainer.innerHTML += `
                     <div class="stock-card">
-                        <div class="stock-top-row">
-                            <h3>${recommendation}</h3>
-                            <button class="add-stock">+</button>
-                        </div>
-                        <div class="price">N/A</div>
+                        <div class="stock-name">${recommendation}</div>
+                        <div class="price">$N/A</div>
                         <div class="change">N/A%</div>
-                    </div>`;
+                        <button class="add-stock">+</button>
+                    </div>
+                `;
             });
         })
         .catch(err => console.error('Error fetching recommendations:', err));
@@ -162,50 +171,56 @@ function fetchRecommendations() {
 function initializeAddStock() {
     document.addEventListener('click', function (e) {
         // Check if the clicked element is the add-stock button
-        if (!e.target.classList.contains('add-stock')) return;
+        
+        if (e.target.classList.contains('add-stock')) {
+            console.log("Event target: ", e.target);
+            // Determine whether the click is from a search result <li>, a stock card, or a recommended stock card
+            const parentElement = e.target.parentElement;
 
-        // Determine whether the click is from a search result <li>, a stock card, or a recommended stock card
-        const parentElement = e.target.closest('li') || e.target.closest('.stock-card') || e.target.closest('.recommended-stock');
-        if (!parentElement) return;
+            console.log("Parent element: ", parentElement);
 
-        // Extract stock data
-        const symbol = parentElement.dataset.symbol || parentElement.querySelector('h3').innerText;
-        const name = parentElement.dataset.name || parentElement.querySelector('.stock-name')?.innerText || symbol;
-        const type = parentElement.dataset.type || 'recommended';
-        const displaySymbol = parentElement.dataset.displaySymbol || symbol;
+            // Extract stock data
+            const symbol = parentElement.dataset.symbol || parentElement.querySelector('.stock-name')?.innerText;
+            const name = parentElement.dataset.name || parentElement.querySelector('.stock-name')?.innerText || symbol;
+            const type = parentElement.dataset.type || 'recommended';
+            const displaySymbol = parentElement.dataset.displaySymbol || symbol;
 
-        // Send data to the server to add the stock
-        if (symbol && name && type && displaySymbol) {
-            fetch('/add_stock', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ symbol, name, type, displaySymbol })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.favorites) {
-                    parentElement.remove(); // Remove the stock card or <li> from the DOM
-                    window.location.reload(); // Reload to update the list
-                } else {
-                    console.error('Error adding stock:', data.error);
-                }
-            })
-            .catch(err => console.error('Error adding stock:', err));
-        } else {
-            console.error('Missing stock data.');
-        }
+            console.log("Adding stock: ", { symbol, name, type, displaySymbol });
+
+            // Send data to the server to add the stock
+            if (symbol && name && type && displaySymbol) {
+                console.log("Adding stock");
+                fetch('/add_stock', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ symbol, name, type, displaySymbol })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.favorites) {
+                        parentElement.remove(); // Remove the stock card or <li> from the DOM
+                        window.location.reload(); // Reload to update the list
+                    } else {
+                        console.error('Error adding stock:', data.error);
+                    }
+                })
+                .catch(err => console.error('Error adding stock:', err));
+            } else {
+                console.error('Missing stock data.');
+            }
+
+        }        
     });
 }
-
 
 // Remove stock functionality (optimized for async behavior)
 function initializeRemoveStock() {
     document.addEventListener('click', function (e) {
         if (e.target.classList.contains('remove-stock')) {
             const stockCard = e.target.closest('.stock-card');
-            const symbol = stockCard.querySelector('h3').innerText;
+            const symbol = stockCard.querySelector('.stock-name').innerText;
 
             if (symbol) {
                 fetch('/remove_stock', {
@@ -241,7 +256,7 @@ function initializeRisingStockFilter() {
                 if (risingCheckbox.checked && changeValue < 0) {
                     card.style.display = 'none'; // Hide stocks with negative change
                 } else {
-                    card.style.display = 'block'; // Show stocks
+                    card.style.display = 'flex'; // Show stocks
                 }
             }
         });
@@ -257,7 +272,7 @@ function handleSearch() {
         fetch(`/search_stock?query=${query}`)
             .then(response => response.json())
             .then(data => {
-                // Populate search results
+                // Clear previous search results
                 searchList.innerHTML = ''; 
 
                 // Check if there is an error in the response
@@ -267,28 +282,31 @@ function handleSearch() {
                     searchList.appendChild(li);
                 } else {
                     // Loop through the matches and display each result
-                    for (let i = 0; i < data.length; i++) {
-                        const stock = data[i];
+                    data.forEach(stock => {
                         const li = document.createElement('li');
                         li.classList.add('search-item');  // Add a class for styling
 
-                        // Ensure the structure is correct
+                        // Structure for <li> with the button
                         li.innerHTML = `
-                            <strong>${stock.name} (${stock.symbol})</strong>
+                            <span class="stock-info">
+                                <strong>${stock.name}   (${stock.symbol})</strong>
+                            </span>
                             <button class="add-stock">+</button>
                         `;
+
                         // Set data attributes on the parent <li> for easy access
                         li.dataset.symbol = stock.symbol;
                         li.dataset.name = stock.name;
                         li.dataset.type = stock.type;
                         li.dataset.displaySymbol = stock.displaySymbol;
                         searchList.appendChild(li);  // Append to the list
-                    }
+                    });
                 }
             })
             .catch(err => console.error('Error fetching stock data:', err));
     }
 }
+
 
 // Debounce function to avoid rapid fetching
 function debounce(func, delay) {
@@ -303,7 +321,8 @@ function debounce(func, delay) {
 function setupStockCards() {
     const stockCards = document.querySelectorAll('.stock-card');
     stockCards.forEach(card => {
-        const symbol = card.querySelector('h3').innerText;
+
+        const symbol = card.querySelector('.stock-name').innerText;
         fetch(`/get_stock_data?symbol=${encodeURIComponent(symbol)}`)
             .then(response => response.json())
             .then(data => {
@@ -333,7 +352,7 @@ function initializeStockCardToggle() {
         // Ensure it's not a button inside the stock card (like add or remove buttons)
         if (stockCard && !e.target.classList.contains('add-stock') && !e.target.classList.contains('remove-stock')) {
             // Get the ticker, price, and change of the stock
-            const symbol = stockCard.querySelector('h3').innerText;
+            const symbol = stockCard.querySelector('.stock-name').innerText;
             const price = parseFloat(stockCard.querySelector('.price').innerText.replace('$', ''));
             const change = parseFloat(stockCard.querySelector('.change').innerText.replace('%', ''));
 
@@ -349,4 +368,31 @@ function initializeStockCardToggle() {
 }
 
 
+function filterMyStock(){
+    // JavaScript to filter the stocks list
+    document.getElementById('stockSearch').addEventListener('input', function() {
+        const filterValue = this.value.toLowerCase();
+        const stockCards = document.querySelectorAll('.my-stock');
 
+        stockCards.forEach(function(card) {
+            const stockName = card.querySelector('.stock-name').textContent.toLowerCase();
+            
+            // Check if the stock name includes all the letters in the search box
+            let matches = true;
+            for (let i = 0; i < filterValue.length; i++) {
+                if (!stockName.includes(filterValue[i])) {
+                    matches = false;
+                    break;
+                }
+            }
+
+            // Toggle visibility based on the matching criteria and reload the styling
+            if (matches) {
+                card.style.display = 'flex';
+                
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+}

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Monitoring App</title>
-
+    <title>User Profile</title>
+    
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" id="theme-stylesheet">
@@ -12,15 +12,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <!-- Hamburger button to toggle the sidebar -->
-    <button class="toggle-sidebar-btn">☰</button>
 
-    <!-- Side navigation bar -->
-    <div class="sidenav">
-        <a href="/">Home</a>
-        <a href="/profile">Profile</a>
-        <a href="/upload">Upload CSV</a>
-        <a href="/logout">Logout</a>
+    <div class="navbar">
+        <h1>STOCK DASHBOARD</h1>
+
+        <div class="navbar-links">
+            <a href="/">Home</a>
+            <a href="profile">Profile</a>
+            <a href="upload">Upload CSV</a>
+            <a href="logout">Logout</a>
+        </div>
     </div>
 
     <!-- Main content container -->
@@ -43,8 +44,6 @@
                     </div>
                 </div>
             </div>
-            
-            <br>
 
             <!-- Update Profile Section -->
             <div class="update-profile-section">
@@ -66,7 +65,6 @@
                 </form>
             </div>
         </section>
-        <br>
 
         <!-- Preferences Section -->
         <section id="preferences-section">
@@ -91,17 +89,6 @@
                 </form>
             </div>
         </section>
-
-        <script type="text/javascript">
-            let userPreferences = {{ current_user.preferences | tojson }};
-            let sectors = userPreferences.sectors || [];
-            
-            document.querySelectorAll('.preferences-list input[type="checkbox"]').forEach(checkbox => {
-                if (sectors.includes(checkbox.value)) {
-                    checkbox.checked = true;
-                }
-            });
-        </script>
     </div>
 </body>
 </html>

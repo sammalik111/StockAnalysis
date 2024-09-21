@@ -320,7 +320,7 @@ def recommendations():
         url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
         df = pd.read_html(url)[0]
         tickers = df['Symbol'].tolist()
-        tickers = tickers[:5]  # Limit to top 100 for recommendations
+        tickers = tickers[:10]  # Limit to top 100 for recommendations
         
         return jsonify(tickers)
             

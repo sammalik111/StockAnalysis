@@ -1,7 +1,7 @@
 /* Basic styling for body */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Light gray background, adjust as needed */
+    background-color: black; /* Light gray background, adjust as needed */
     margin: 0;
     padding: 0;
 }
@@ -109,4 +109,16 @@ p {
 
 .stock-price .change.negative {
     color: red; /* Color for negative change */
+}
+
+
+.container {
+    margin-left: 18%;
+    margin-top: 150px;
+    justify-self: center;
+    width: 65%;
+}
+
+.toggle-sidebar-btn {
+    margin-left: 1%;
 }
