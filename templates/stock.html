@@ -12,6 +12,38 @@
 </head>
 <body>
     
+    <!-- Side navigation bar -->
+    <div class="sidenav">
+        <div class="scrollable-container">
+            <input class="search-my-stocks" type="text" placeholder="Search My Stocks..." id="stockSearch" />
+
+            <!-- Business News -->
+            <div class="business-news">
+                <h2>Business News</h2>
+                <div class="news-source">From Yahoo Finance</div>
+            </div>
+
+            <!-- Dynamic stock cards -->
+            <div id="stockList">
+                {% for stock in current_user.favorite_stocks %}
+                    <div class="stock-card my-stock">
+                        <div class="stock-details">
+                            <div class="stock-name"> {{ stock }} </div>
+                            <div class="stock-symbol">stock</div>
+                        </div>
+                        <div class="stock-stats">
+                            <div class="price"> $N/A </div>
+                            <div class="change positive"> N/A%</div>
+                        </div>
+                        <button class="remove-stock">X</button>
+                    </div>
+                {% else %}
+                    <div class="no-stocks">No favorite stocks added yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
     <div class="navbar">
         <!-- Hamburger button to toggle the sidebar -->
         <button class="toggle-sidebar-btn">☰</button>

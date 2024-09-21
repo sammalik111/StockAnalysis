@@ -1,14 +1,19 @@
+import asyncio
+import aiohttp
 import feedparser
 
-def fetch_rss_feed(url):
-    """Fetch and parse RSS feed."""
-    return feedparser.parse(url)
+# Fetch RSS feeds asynchronously
+async def fetch_rss_feed_async(session, url):
+    """Asynchronously fetch and parse an RSS feed."""
+    async with session.get(url) as response:
+        # Read the response text and parse it with feedparser
+        response_text = await response.text()
+        return feedparser.parse(response_text)
 
 def filter_articles_by_stock(feed, stock_name, source):
     """Filter articles that mention the stock name and return only title and link."""
     filtered_articles = []
     for entry in feed.entries:
-        # Check if the stock name exists in title
         if stock_name.lower() in entry.title.lower():
             article = {
                 'title': entry.title,
@@ -17,10 +22,9 @@ def filter_articles_by_stock(feed, stock_name, source):
                 'source': source
             }
             filtered_articles.append(article)
-    
     return filtered_articles
 
-def get_news(stock_name):
+async def get_news_async(stock_name):
     rss_feed_names = [
         'MarketWatch',
         'Business Insider',
@@ -30,6 +34,7 @@ def get_news(stock_name):
         'Financial Times',
         'Yahoo Finance'
     ]
+    
     rss_feed_urls = [
         'https://www.marketwatch.com/rss/topstories',
         'https://www.businessinsider.com/rss',
@@ -40,11 +45,24 @@ def get_news(stock_name):
         'https://finance.yahoo.com/rss/'
     ]
 
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_rss_feed_async(session, url) for url in rss_feed_urls]
+        feeds = await asyncio.gather(*tasks)  # Fetch all feeds concurrently
+
     articles = []
-    for i in range(len(rss_feed_urls)):
-        feed = fetch_rss_feed(rss_feed_urls[i])
-        articles.extend(filter_articles_by_stock(feed, stock_name, rss_feed_names[i]))
-    
+    for i, feed in enumerate(feeds):
+        filtered_articles = filter_articles_by_stock(feed, stock_name, rss_feed_names[i])
+        articles.extend(filtered_articles)
+
     return articles
 
+# Synchronous function to use the asynchronous function
+def get_news(stock_name):
+    return asyncio.run(get_news_async(stock_name))
 
+# Example usage
+if __name__ == "__main__":
+    stock_name = "Tesla"
+    articles = get_news(stock_name)
+    for article in articles:
+        print(f"Title: {article['title']}, Link: {article['link']}, Source: {article['source']}")

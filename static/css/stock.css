@@ -1,124 +1,237 @@
-/* Basic styling for body */
+/* Basic body styling (already applied) */
 body {
-    font-family: Arial, sans-serif;
-    background-color: black; /* Light gray background, adjust as needed */
+    font-family: 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+    background-color: #0b0c0e; /* Match home page background */
+    color: #d1d5db; /* Light grey text */
     margin: 0;
     padding: 0;
+    min-height: 100vh;
 }
 
-/* Container for sections */
-section {
-    margin: 20px;
+/* Main container for the content */
+.main-content {
+    padding: 40px;
+    margin-left: 17%; /* Align with the sidenav */
+    margin-top: 80px;
+    background-color: #0b0c0e; /* Black background */
+    color: #d1d5db; /* Light grey text */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    width: 65%;
+}
+
+/* Table container styling */
+.table-container {
+    background-color: #0e1a26; /* Dark blue background for the table section */
+    border-radius: 12px;
     padding: 20px;
-    background: rgba(20, 34, 46, 0.85); /* Darker background for sections */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-}
-
-/* Heading styles */
-h2 {
-    color: #c4d7e0;
-    border-bottom: 2px solid #007bff; /* Blue border for headers */
-    padding-bottom: 10px;
     margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* Table styling */
 table {
     width: 100%;
     border-collapse: collapse;
-    overflow-x: auto; /* Enable horizontal scroll if needed */
+    color: #d1d5db; /* Light grey text */
 }
 
 thead {
-    background-color: #007bff; /* Dark blue background for header */
-    color: white;
+    background-color: #111; /* Darker background for table header */
+    color: #ffffff; /* White text for header */
 }
 
 th, td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #555; /* Darker border color */
+    border-bottom: 1px solid #333; /* Darker border color */
 }
 
 tr:hover {
-    background-color: rgba(0, 123, 255, 0.1); /* Light blue highlight on hover */
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue hover effect */
 }
 
-/* Add scroll for long tables */
+/* Table scroll for long tables */
 .table-container {
-    max-height: 400px; /* Adjust height as needed */
+    max-height: 400px;
     overflow-y: auto;
-    border: 1px solid #333; /* Dark border color */
-    border-radius: 4px;
+    border: 1px solid #333;
+    border-radius: 8px;
 }
 
-
-.forecast-chart {
-    background-color: #0e1a26; /* Match the dark theme */
+/* Price prediction model container */
+.prediction-container {
+    background-color: #0e1a26; /* Dark blue background for prediction model */
+    border-radius: 12px;
+    padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+/* Prediction chart styling */
+.forecast-chart {
+    background-color: #111215; /* Black-grey background for the chart */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    padding: 20px;
     width: 100%;
 }
 
-
-p {
-    padding-left: 30px;
-}
-
-
-
-
-
-.stock-summary {
+/* Prediction title */
+.prediction-title {
+    font-size: 24px;
+    color: #d1d5db; /* Light grey text */
     margin-bottom: 20px;
-    padding: 20px;
-    background: rgba(20, 34, 46, 0.9); /* Match container background */
-    border-radius: 10px;
-    color: #00d4ff; /* Aqua color for title */
+    border-bottom: 2px solid #007bff; /* Blue underline */
+    padding-bottom: 10px;
+}
+
+/* General text and content in prediction model */
+.prediction-info {
+    font-size: 16px;
+    color: #c4d7e0; /* Slightly lighter grey text */
+    line-height: 1.6;
+}
+
+/* Table chart */
+.table-chart {
+    background-color: #111215;
+    color: #c4d7e0; /* Grey text */
+    padding: 12px;
+    border-radius: 8px;
+}
+
+/* Headings in the content */
+h2, h3 {
+    color: #c4d7e0;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: left;
+    letter-spacing: 0.5px;
+}
+
+/* Button styling */
+button {
+    background-color: #007bff;
+    border: none;
+    color: #ffffff;
+    padding: 1px 5px !important;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    color: #0056b3; /* Darker blue on hover */
+}
+
+/* Responsiveness for smaller screens */
+@media (max-width: 768px) {
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    table, .table-container {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    .forecast-chart, .prediction-container {
+        padding: 15px;
+    }
+}
+
+
+
+
+
+
+/* Stock summary section container */
+.stock-summary {
+    background-color: rgba(15, 15, 20, 0.95); /* Darker, solid background */
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6); /* Larger shadow for depth */
     display: flex;
-    justify-content: space-between; /* Distribute space between title and price */
+    justify-content: space-between;
     align-items: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.stock-info {
+/* Stock summary hover effect */
+.stock-summary:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    background-color: rgba(25, 25, 35, 0.95); /* Darker on hover */
+}
+
+/* Stock info section inside stock-summary */
+.stock-summary .stock-info {
     display: flex;
-    justify-content: space-between; /* Space between title and price/change */
-    width: 100%; /* Ensure it takes the full width of the container */
+    justify-content: space-between; /* Pushes elements to the edges */
+    align-items: center;
+    width: 100%;
 }
 
-.stock-name {
-    font-size: 50px; /* Large font size for stock name */
-    margin-right: auto; /* Push the price/change to the right */
+/* Stock name inside stock-summary */
+.stock-summary .stock-name {
+    font-size: 48px; /* Large size for stock symbol */
+    color: #f5f5f7; /* Off-white color */
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 1px; /* Slight spacing for modern look */
 }
 
-.stock-price {
-    font-size: 24px; /* Font size for price and change */
-    text-align: right; /* Right-align the price and change */
+/* Stock price container inside stock-summary */
+.stock-summary .stock-price {
+    margin-left: auto; /* Pushes the stock price to the right */
+    text-align: right; /* Align price and change to the right */
 }
 
-.stock-price .price {
-    font-size: 36px; /* Large font size for price */
-    display: block; /* Ensure each item is on a new line */
-    margin-bottom: 5px;
+/* Price inside stock-summary */
+.stock-summary .stock-price .price {
+    font-size: 42px; /* Slightly smaller than before */
+    color: #007bff; /* Slightly darker aqua for better contrast */
+    font-weight: 600;
+    display: block;
 }
 
-.stock-price .change {
-    font-size: 18px; /* Font size for change */
-    color: #00d4ff; /* Default color for positive change */
+/* Change percentage inside stock-summary */
+.stock-summary .stock-price .change {
+    font-size: 20px; /* Smaller font for change */
+    color: #82e9de; /* Aqua color for positive change */
+    margin-top: 8px; /* Space between price and change */
 }
 
-.stock-price .change.negative {
-    color: red; /* Color for negative change */
+.stock-summary .stock-price .change.negative {
+    color: #ff6b6b; /* Red for negative change */
 }
 
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .stock-summary {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-.container {
-    margin-left: 18%;
-    margin-top: 150px;
-    justify-self: center;
-    width: 65%;
-}
+    .stock-summary .stock-name {
+        font-size: 36px;
+    }
 
-.toggle-sidebar-btn {
-    margin-left: 1%;
+    .stock-summary .stock-price {
+        text-align: left;
+        margin-top: 15px;
+        margin-left: 0; /* Remove auto margin in mobile view */
+    }
+
+    .stock-summary .stock-price .price {
+        font-size: 32px;
+    }
+
+    .stock-summary .stock-price .change {
+        font-size: 18px;
+    }
 }

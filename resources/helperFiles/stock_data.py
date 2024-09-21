@@ -7,9 +7,8 @@ import pandas as pd
 import plotly.io as pio
 from yahoo_fin import stock_info
 
-START = "2022-01-01"
 TODAY = date.today().strftime("%Y-%m-%d")
-
+START = TODAY[:4] + "-01-01"
 
 def load_data(ticker):
     data = yf.download(ticker, START, TODAY)
@@ -31,6 +30,8 @@ def generate_body_content(stock_symbol, stock_data, forecast_html, price, change
             </div>
         </div>
     </section>
+    
+    <br>
 
     <section>
         <h2>Stock Data for {stock_symbol}</h2>
